@@ -1,5 +1,6 @@
 package cz.antelli.assistant.sdk.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -26,7 +27,7 @@ public class AnswerItem implements Parcelable {
     private String text;
     private String image;
     private int imageScaleType = IMAGE_CROP;
-    private String command;
+    private Uri command;
     private List<String> speech;
     private int type = TYPE_CONVERSATION;
 
@@ -90,11 +91,11 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
-    public String getCommand() {
+    public Uri getCommand() {
         return command;
     }
 
-    public AnswerItem setCommand(String command) {
+    public AnswerItem setCommand(Uri command) {
         this.command = command;
         return this;
     }
@@ -120,7 +121,7 @@ public class AnswerItem implements Parcelable {
         dest.writeString(this.text);
         dest.writeString(this.image);
         dest.writeInt(this.imageScaleType);
-        dest.writeString(this.command);
+        dest.writeParcelable(this.command, flags);
         dest.writeStringList(this.speech);
         dest.writeInt(this.type);
     }
@@ -131,7 +132,7 @@ public class AnswerItem implements Parcelable {
         this.text = in.readString();
         this.image = in.readString();
         this.imageScaleType = in.readInt();
-        this.command = in.readString();
+        this.command = in.readParcelable(Uri.class.getClassLoader());
         this.speech = in.createStringArrayList();
         this.type = in.readInt();
     }

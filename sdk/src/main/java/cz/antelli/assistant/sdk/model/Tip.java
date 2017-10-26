@@ -1,5 +1,6 @@
 package cz.antelli.assistant.sdk.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,8 +11,35 @@ import android.os.Parcelable;
 public class Tip implements Parcelable {
 
     private String title;
-    private String command;
+    private Uri command;
     private String query;
+
+    public Tip() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Uri getCommand() {
+        return command;
+    }
+
+    public void setCommand(Uri command) {
+        this.command = command;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
 
     @Override
     public int describeContents() {
@@ -20,18 +48,15 @@ public class Tip implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.title);
-        dest.writeString(this.command);
-        dest.writeString(this.query);
-    }
-
-    public Tip() {
+        dest.writeString(this.getTitle());
+        dest.writeParcelable(this.getCommand(), flags);
+        dest.writeString(this.getQuery());
     }
 
     protected Tip(Parcel in) {
-        this.title = in.readString();
-        this.command = in.readString();
-        this.query = in.readString();
+        this.setTitle(in.readString());
+        this.setCommand((Uri) in.readParcelable(Uri.class.getClassLoader()));
+        this.setQuery(in.readString());
     }
 
     public static final Creator<Tip> CREATOR = new Creator<Tip>() {

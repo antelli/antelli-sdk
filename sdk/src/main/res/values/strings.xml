@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Antelli Assistant SDK</string>
+    <string name="antelli_sdk_version">0.7.0</string>
 </resources>

@@ -23,10 +23,15 @@ public class Question implements Parcelable {
         return getLowerCase().contains(string.toLowerCase());
     }
 
+    public boolean containsWord(String word){
+        String input = addSpacePadding(getLowerCase());
+        return input.contains(addSpacePadding(word));
+    }
+
     public boolean containsOneOf(String... words){
-        String lowerCase = " " + getLowerCase() + " ";
+        String input = addSpacePadding(getLowerCase());
         for (int i = 0; i < words.length; i++) {
-            if (lowerCase.contains(" " + words[i].toLowerCase() + " ")) {
+            if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
                 return true;
             }
         }
@@ -34,9 +39,10 @@ public class Question implements Parcelable {
     }
 
     public boolean containsAllOf(String... words){
-        String lowerCase = " " + getLowerCase() + " ";
+        String input = addSpacePadding(getLowerCase());
+
         for (int i = 0; i < words.length; i++) {
-            if (!lowerCase.contains(" " + words[i].toLowerCase() + " ")) {
+            if (!input.contains(addSpacePadding(words[i]))) {
                 return false;
             }
         }
@@ -48,15 +54,20 @@ public class Question implements Parcelable {
     }
 
     public String removeWords(String... words){
-        String result = " " + getLowerCase() + " ";
+        String input = addSpacePadding(getLowerCase());
+
         for (int i = 0; i < words.length; i++) {
-            result = result.replace((" " + words[i] + " "), " ");
+            input = input.replace(addSpacePadding(words[i]), " ");
         }
-        return result.trim();
+        return input.trim();
     }
 
     public String getLowerCase() {
         return raw.toLowerCase();
+    }
+
+    private String addSpacePadding(String in){
+        return new StringBuilder().append(" ").append(in).append(" ").toString();
     }
 
     @Override
