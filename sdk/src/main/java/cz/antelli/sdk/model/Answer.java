@@ -1,5 +1,6 @@
-package cz.antelli.assistant.sdk.model;
+package cz.antelli.sdk.model;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,20 +13,27 @@ import java.util.List;
 
 public class Answer implements Parcelable {
 
+    private static final String PARAM_AUTO_LISTEN = "AUTO_LISTEN";
+
     private List<AnswerItem> items = new ArrayList<>();
     private List<Tip> tips;
-    private boolean autoListen;
+    private Bundle params = new Bundle();
+    //private boolean autoListen;
 
     public Answer() {
     }
 
-    public Answer(AnswerItem item){
+    public Answer(String text) {
+        addItem(new AnswerItem().setText(text).speak(text));
+    }
+
+    /*public Answer(AnswerItem item){
         getItems().add(item);
     }
 
     public Answer(List<AnswerItem> items){
         getItems().addAll(items);
-    }
+    }*/
 
     public Answer addItem(AnswerItem item){
         getItems().add(item);
@@ -50,12 +58,12 @@ public class Answer implements Parcelable {
         return items;
     }
 
-    public boolean hasAutoListen() {
-        return autoListen;
+    public boolean isAutoListen() {
+        return params.getBoolean(PARAM_AUTO_LISTEN, false);
     }
 
     public Answer setAutoListen(boolean autoListen) {
-        this.autoListen = autoListen;
+        params.putBoolean(PARAM_AUTO_LISTEN, autoListen);
         return this;
     }
 
@@ -75,13 +83,13 @@ public class Answer implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.items);
         dest.writeTypedList(this.tips);
-        dest.writeByte(this.autoListen ? (byte) 1 : (byte) 0);
+        dest.writeBundle(this.params);
     }
 
     protected Answer(Parcel in) {
         this.items = in.createTypedArrayList(AnswerItem.CREATOR);
         this.tips = in.createTypedArrayList(Tip.CREATOR);
-        this.autoListen = in.readByte() != 0;
+        this.params = in.readBundle();
     }
 
     public static final Creator<Answer> CREATOR = new Creator<Answer>() {

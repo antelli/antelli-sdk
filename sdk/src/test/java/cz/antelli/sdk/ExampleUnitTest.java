@@ -1,4 +1,4 @@
-package cz.antelli.assistant.sdk;
+package cz.antelli.sdk;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package cz.antelli.assistant.sdk;
+package cz.antelli.sdk;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

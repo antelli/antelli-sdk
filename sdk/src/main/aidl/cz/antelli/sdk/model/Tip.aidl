@@ -1,5 +1,5 @@
 // Answer.aidl
-package cz.antelli.assistant.api.model;
+package cz.antelli.sdk.model;
 
 // Declare any non-default types here with import statements
 

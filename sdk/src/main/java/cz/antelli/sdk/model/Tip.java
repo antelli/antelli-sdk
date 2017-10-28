@@ -1,4 +1,4 @@
-package cz.antelli.assistant.sdk.model;
+package cz.antelli.sdk.model;
 
 import android.net.Uri;
 import android.os.Parcel;

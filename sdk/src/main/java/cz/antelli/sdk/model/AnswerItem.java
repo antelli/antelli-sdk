@@ -1,11 +1,11 @@
-package cz.antelli.assistant.sdk.model;
+package cz.antelli.sdk.model;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by stepan on 27.08.2017.
@@ -13,6 +13,14 @@ import java.util.List;
 
 public class AnswerItem implements Parcelable {
 
+    private static final String PARAM_TITLE = "TITLE";
+    private static final String PARAM_SUBTITLE = "SUBTITLE";
+    private static final String PARAM_TEXT = "TEXT";
+    private static final String PARAM_IMAGE = "IMAGE";
+    private static final String PARAM_IMAGE_SCALE_TYPE = "IMAGE_SCALE_TYPE";
+    private static final String PARAM_COMMAND = "COMMAND";
+    private static final String PARAM_SPEECH = "SPEECH";
+    private static final String PARAM_TYPE = "TYPE";
 
     public static final int TYPE_CONVERSATION = 1;
     public static final int TYPE_CARD = 2;
@@ -20,26 +28,19 @@ public class AnswerItem implements Parcelable {
     public static final int IMAGE_CROP = 1;
     public static final int IMAGE_FIT = 2;
 
-    public static final int TEXT_SMALL = 2;
+    private Bundle params = new Bundle();
 
-    private String title;
-    private String subtitle;
-    private String text;
-    private String image;
-    private int imageScaleType = IMAGE_CROP;
-    private Uri command;
-    private List<String> speech;
-    private int type = TYPE_CONVERSATION;
-
-    public List<String> getSpeech() {
-        return speech;
+    public ArrayList<String> getSpeech() {
+        return params.getStringArrayList(PARAM_SPEECH);
     }
 
     public AnswerItem speak(String text){
+        ArrayList<String> speech = params.getStringArrayList(PARAM_SPEECH);
         if (speech == null){
             speech = new ArrayList<>();
         }
         speech.add(text);
+        params.putStringArrayList(PARAM_SPEECH, speech);
         return this;
     }
 
@@ -47,65 +48,65 @@ public class AnswerItem implements Parcelable {
     }
 
     public String getText() {
-        return text;
+        return params.getString(PARAM_TEXT);
     }
 
     public AnswerItem setText(String text) {
-        this.text = text;
+        params.putString(PARAM_TEXT, text);
         return this;
     }
 
     public String getTitle() {
-        return title;
+        return params.getString(PARAM_TITLE);
     }
 
     public AnswerItem setTitle(String title) {
-        this.title = title;
+        params.putString(PARAM_TITLE, title);
         return this;
     }
 
     public String getSubtitle() {
-        return subtitle;
+        return params.getString(PARAM_SUBTITLE);
     }
 
     public AnswerItem setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+        params.putString(PARAM_SUBTITLE, subtitle);
         return this;
     }
 
     public String getImage() {
-        return image;
+        return params.getString(PARAM_IMAGE);
     }
 
     public AnswerItem setImage(String image) {
-        this.image = image;
+        params.putString(PARAM_IMAGE, image);
         return this;
     }
 
     public int getType() {
-        return type;
+        return params.getInt(PARAM_TYPE, TYPE_CONVERSATION);
     }
 
     public AnswerItem setType(int type) {
-        this.type = type;
+        params.putInt(PARAM_TYPE, type);
         return this;
     }
 
-    public Uri getCommand() {
-        return command;
+    public String getCommand() {
+        return params.getString(PARAM_COMMAND);
     }
 
-    public AnswerItem setCommand(Uri command) {
-        this.command = command;
+    public AnswerItem setCommand(String command) {
+        params.putString(PARAM_COMMAND, command);
         return this;
     }
 
     public int getImageScaleType() {
-        return imageScaleType;
+        return params.getInt(PARAM_IMAGE_SCALE_TYPE, IMAGE_CROP);
     }
 
     public AnswerItem setImageScaleType(int imageScaleType) {
-        this.imageScaleType = imageScaleType;
+        params.putInt(PARAM_IMAGE_SCALE_TYPE, imageScaleType);
         return this;
     }
 
@@ -116,25 +117,11 @@ public class AnswerItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.title);
-        dest.writeString(this.subtitle);
-        dest.writeString(this.text);
-        dest.writeString(this.image);
-        dest.writeInt(this.imageScaleType);
-        dest.writeParcelable(this.command, flags);
-        dest.writeStringList(this.speech);
-        dest.writeInt(this.type);
+        dest.writeBundle(this.params);
     }
 
     protected AnswerItem(Parcel in) {
-        this.title = in.readString();
-        this.subtitle = in.readString();
-        this.text = in.readString();
-        this.image = in.readString();
-        this.imageScaleType = in.readInt();
-        this.command = in.readParcelable(Uri.class.getClassLoader());
-        this.speech = in.createStringArrayList();
-        this.type = in.readInt();
+        this.params = in.readBundle();
     }
 
     public static final Creator<AnswerItem> CREATOR = new Creator<AnswerItem>() {
