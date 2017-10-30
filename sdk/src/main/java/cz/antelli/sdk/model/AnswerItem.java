@@ -22,11 +22,11 @@ public class AnswerItem implements Parcelable {
     private static final String PARAM_SPEECH = "SPEECH";
     private static final String PARAM_TYPE = "TYPE";
 
-    public static final int TYPE_CONVERSATION = 1;
-    public static final int TYPE_CARD = 2;
+    public static final int TYPE_CONVERSATION = 0;
+    public static final int TYPE_CARD = 1;
 
-    public static final int IMAGE_CROP = 1;
-    public static final int IMAGE_FIT = 2;
+    public static final int IMAGE_CROP = 0;
+    public static final int IMAGE_FIT = 1;
 
     private Bundle params = new Bundle();
 
