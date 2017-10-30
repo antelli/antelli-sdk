@@ -1,7 +1,7 @@
 package cz.antelli.sdk;
 
 /**
- * Created by stepan on 29.08.2017.
+ * Handcrafted by Štěpán Šonský on 29.08.2017.
  */
 
 public class AntelliSDK {

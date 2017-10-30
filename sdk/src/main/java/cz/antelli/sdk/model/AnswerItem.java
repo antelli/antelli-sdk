@@ -8,7 +8,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 /**
- * Created by stepan on 27.08.2017.
+ * Handcrafted by Štěpán Šonský on 27.08.2017.
  */
 
 public class AnswerItem implements Parcelable {
@@ -30,21 +30,29 @@ public class AnswerItem implements Parcelable {
 
     private Bundle params = new Bundle();
 
-    public ArrayList<String> getSpeech() {
-        return params.getStringArrayList(PARAM_SPEECH);
-    }
-
-    public AnswerItem speak(String text){
-        ArrayList<String> speech = params.getStringArrayList(PARAM_SPEECH);
-        if (speech == null){
-            speech = new ArrayList<>();
-        }
-        speech.add(text);
-        params.putStringArrayList(PARAM_SPEECH, speech);
-        return this;
-    }
-
     public AnswerItem() {
+    }
+
+    public AnswerItem(String text) {
+        setText(text);
+        speak(text);
+    }
+
+    public AnswerItem(String title, String subtitle, String text, String image, String speech) {
+        setTitle(title);
+        setSubtitle(subtitle);
+        setText(text);
+        setImage(image);
+        speak(speech);
+    }
+
+    public AnswerItem(String title, String subtitle, String text, String image, String speech, int type) {
+        setTitle(title);
+        setSubtitle(subtitle);
+        setText(text);
+        setImage(image);
+        setType(type);
+        speak(speech);
     }
 
     public String getText() {
@@ -107,6 +115,15 @@ public class AnswerItem implements Parcelable {
 
     public AnswerItem setImageScaleType(int imageScaleType) {
         params.putInt(PARAM_IMAGE_SCALE_TYPE, imageScaleType);
+        return this;
+    }
+
+    public String getSpeech() {
+        return params.getString(PARAM_SPEECH);
+    }
+
+    public AnswerItem speak(String text){
+        params.putString(PARAM_SPEECH, text);
         return this;
     }
 

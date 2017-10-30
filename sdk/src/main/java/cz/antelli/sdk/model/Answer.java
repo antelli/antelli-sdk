@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stepan on 27.08.2017.
+ * Handcrafted by Štěpán Šonský on 27.08.2017.
  */
 
 public class Answer implements Parcelable {
@@ -18,7 +18,6 @@ public class Answer implements Parcelable {
     private List<AnswerItem> items = new ArrayList<>();
     private List<Tip> tips;
     private Bundle params = new Bundle();
-    //private boolean autoListen;
 
     public Answer() {
     }
@@ -27,35 +26,17 @@ public class Answer implements Parcelable {
         addItem(new AnswerItem().setText(text).speak(text));
     }
 
-    /*public Answer(AnswerItem item){
-        getItems().add(item);
+    public Answer(List<AnswerItem> items){
+        this.items.addAll(items);
     }
 
-    public Answer(List<AnswerItem> items){
-        getItems().addAll(items);
-    }*/
-
     public Answer addItem(AnswerItem item){
-        getItems().add(item);
+        this.items.add(item);
         return this;
     }
 
     public void addItems(List<AnswerItem> item){
-        getItems().addAll(item);
-    }
-
-    public List<String> getToSpeak(){
-        List<String> result = new ArrayList<>();
-        for (AnswerItem item : getItems()) {
-            if (item.getSpeech()!=null) {
-                result.addAll(item.getSpeech());
-            }
-        }
-        return result;
-    }
-
-    public List<AnswerItem> getItems() {
-        return items;
+        this.items.addAll(item);
     }
 
     public boolean isAutoListen() {
@@ -72,6 +53,10 @@ public class Answer implements Parcelable {
             tips = new ArrayList<>();
         }
         tips.add(tip);
+    }
+
+    public List<AnswerItem> getItems() {
+        return items;
     }
 
     @Override

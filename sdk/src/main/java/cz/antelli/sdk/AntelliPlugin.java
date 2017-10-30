@@ -2,7 +2,6 @@ package cz.antelli.sdk;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -10,7 +9,7 @@ import cz.antelli.sdk.model.Answer;
 import cz.antelli.sdk.model.Question;
 
 /**
- * Created by stepan on 29.08.2017.
+ * Handcrafted by Štěpán Šonský on 29.08.2017.
  */
 
 public abstract class AntelliPlugin extends Service {
@@ -21,7 +20,7 @@ public abstract class AntelliPlugin extends Service {
     protected abstract Answer answer(Question question) throws RemoteException;
     protected abstract void reset();
 
-    protected Answer answerCommand(String command) throws RemoteException{
+    protected Answer command(String command) throws RemoteException{
         return null;
     }
 
@@ -43,8 +42,8 @@ public abstract class AntelliPlugin extends Service {
             }
 
             @Override
-            public Answer answerCommand(String command) throws RemoteException {
-                return AntelliPlugin.this.answerCommand(command);
+            public Answer command(String command) throws RemoteException {
+                return AntelliPlugin.this.command(command);
             }
 
             @Override

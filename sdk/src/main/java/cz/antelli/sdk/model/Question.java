@@ -4,70 +4,94 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by stepan on 28.08.2017.
+ * Handcrafted by Štěpán Šonský on 28.08.2017.
  */
 
 public class Question implements Parcelable {
 
     private String raw;
+    private String lowerCase;
 
     public Question(String raw) {
         this.raw = raw;
+        if (raw != null) {
+            lowerCase = raw.toLowerCase();
+        }
     }
 
     public String getRaw() {
         return raw;
     }
 
-    public boolean contains(String string){
-        return getLowerCase().contains(string.toLowerCase());
-    }
-
-    public boolean containsWord(String word){
-        String input = addSpacePadding(getLowerCase());
-        return input.contains(addSpacePadding(word));
-    }
-
-    public boolean containsOneOf(String... words){
-        String input = addSpacePadding(getLowerCase());
-        for (int i = 0; i < words.length; i++) {
-            if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
-                return true;
-            }
+    public boolean contains(String string) {
+        if (lowerCase != null) {
+            return getLowerCase().contains(string.toLowerCase());
         }
         return false;
     }
 
-    public boolean containsAllOf(String... words){
-        String input = addSpacePadding(getLowerCase());
+    public boolean containsWord(String word) {
+        if (lowerCase != null) {
+            String input = addSpacePadding(getLowerCase());
+            return input.contains(addSpacePadding(word));
+        }
+        return false;
+    }
 
-        for (int i = 0; i < words.length; i++) {
-            if (!input.contains(addSpacePadding(words[i]))) {
-                return false;
+    public boolean containsOneOf(String... words) {
+        if (lowerCase != null && words != null) {
+            String input = addSpacePadding(getLowerCase());
+            for (int i = 0; i < words.length; i++) {
+                if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
+                    return true;
+                }
             }
+            return false;
         }
-        return true;
+        return false;
     }
 
-    public boolean startWith(String prefix){
-        return getLowerCase().startsWith(prefix);
+    public boolean containsAllOf(String... words) {
+        if (lowerCase != null && words != null) {
+            String input = addSpacePadding(getLowerCase());
+
+            for (int i = 0; i < words.length; i++) {
+                if (!input.contains(addSpacePadding(words[i]))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
-    public String removeWords(String... words){
-        String input = addSpacePadding(getLowerCase());
-
-        for (int i = 0; i < words.length; i++) {
-            input = input.replace(addSpacePadding(words[i]), " ");
+    public boolean startWith(String prefix) {
+        if (lowerCase != null) {
+            return getLowerCase().startsWith(prefix);
         }
-        return input.trim();
+        return false;
+    }
+
+    public String removeWords(String... words) {
+        if (lowerCase != null) {
+            String result = addSpacePadding(getLowerCase());
+
+            if (words !=null) {
+                for (int i = 0; i < words.length; i++) {
+                    result = result.replace(addSpacePadding(words[i]), " ");
+                }
+            }
+            return result.trim();
+        }
+        return null;
     }
 
     public String getLowerCase() {
-        return raw.toLowerCase();
+        return lowerCase;
     }
 
-    private String addSpacePadding(String in){
-        return new StringBuilder().append(" ").append(in).append(" ").toString();
+    private String addSpacePadding(String text) {
+        return new StringBuilder().append(" ").append(text).append(" ").toString();
     }
 
     @Override
@@ -78,13 +102,15 @@ public class Question implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.raw);
+        dest.writeString(this.lowerCase);
     }
 
     protected Question(Parcel in) {
         this.raw = in.readString();
+        this.lowerCase = in.readString();
     }
 
-    public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
         @Override
         public Question createFromParcel(Parcel source) {
             return new Question(source);
