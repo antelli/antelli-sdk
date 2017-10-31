@@ -16,17 +16,37 @@ public abstract class AntelliPlugin extends Service {
 
     public static final String ACTION_ANSWER = "cz.antelli.assistant.ANSWER";
 
+    /**
+     * Specify the conditions if your service can answer user's Question
+     */
     protected abstract boolean canAnswer(Question question) throws RemoteException;
+
+    /**
+     * Create Answer for user's Question
+     * @param question Input question from the user
+     * @return Answer for the user
+     * @throws RemoteException
+     */
     protected abstract Answer answer(Question question) throws RemoteException;
+
+    /**
+     * Create Answer for user's command (AnswerItem onClick or Tip onClick)
+     * @param command Command from AnswerItem or Tip
+     * @return Answer for the user
+     * @throws RemoteException
+     */
+    protected abstract Answer command(String command) throws RemoteException;
+
+    /**
+     * Reset all variables to default values, if you set some during the conversation
+     */
     protected abstract void reset();
 
-    protected Answer command(String command) throws RemoteException{
-        return null;
-    }
-
-    protected Class getSettingsActivity(){
-        return null;
-    }
+    /**
+     * Define Settings Activity, if your plugin has enabled settings in Manifest
+     * @return Settings Activity Class
+     */
+    protected abstract Class getSettingsActivity();
 
     @Override
     public IBinder onBind(Intent intent) {

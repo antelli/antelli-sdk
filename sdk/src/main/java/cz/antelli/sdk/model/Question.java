@@ -1,5 +1,6 @@
 package cz.antelli.sdk.model;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,37 +10,79 @@ import android.os.Parcelable;
 
 public class Question implements Parcelable {
 
-    private String raw;
-    private String lowerCase;
+    private static final String PARAM_RAW = "RAW";
+    private static final String PARAM_LOWER_CASE = "LOWER_CASE";
+
+    private Bundle params = new Bundle();
 
     public Question(String raw) {
-        this.raw = raw;
+        setRaw(raw);
         if (raw != null) {
-            lowerCase = raw.toLowerCase();
+            setLowerCase(raw.toLowerCase());
         }
     }
 
+    private void setRaw(String raw){
+        params.putString(PARAM_RAW, raw);
+    }
+
     public String getRaw() {
-        return raw;
+        return params.getString(PARAM_RAW);
+    }
+
+    public boolean equals(String string){
+        if (notNull()){
+            if (string !=null) {
+                return getLowerCase().equals(string.toLowerCase());
+            }
+        }
+        else if(string == null){
+            return true;
+        }
+        return false;
     }
 
     public boolean contains(String string) {
-        if (lowerCase != null) {
+        if (notNull()) {
             return getLowerCase().contains(string.toLowerCase());
         }
         return false;
     }
 
+    public boolean containsOne(String... strings) {
+        if (notNull() && strings != null) {
+            for (int i = 0; i < strings.length; i++) {
+                if (getLowerCase().contains(strings[i].toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public boolean containsAll(String... strings) {
+        if (notNull() && strings != null) {
+            for (int i = 0; i < strings.length; i++) {
+                if (!getLowerCase().contains(strings[i].toLowerCase())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public boolean containsWord(String word) {
-        if (lowerCase != null) {
+        if (notNull()) {
             String input = addSpacePadding(getLowerCase());
             return input.contains(addSpacePadding(word));
         }
         return false;
     }
 
-    public boolean containsOneOf(String... words) {
-        if (lowerCase != null && words != null) {
+    public boolean containsOneWord(String... words) {
+        if (notNull() && words != null) {
             String input = addSpacePadding(getLowerCase());
             for (int i = 0; i < words.length; i++) {
                 if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
@@ -51,8 +94,8 @@ public class Question implements Parcelable {
         return false;
     }
 
-    public boolean containsAllOf(String... words) {
-        if (lowerCase != null && words != null) {
+    public boolean containsAllWords(String... words) {
+        if (notNull() && words != null) {
             String input = addSpacePadding(getLowerCase());
 
             for (int i = 0; i < words.length; i++) {
@@ -66,14 +109,14 @@ public class Question implements Parcelable {
     }
 
     public boolean startWith(String prefix) {
-        if (lowerCase != null) {
+        if (notNull()) {
             return getLowerCase().startsWith(prefix);
         }
         return false;
     }
 
     public String removeWords(String... words) {
-        if (lowerCase != null) {
+        if (notNull()) {
             String result = addSpacePadding(getLowerCase());
 
             if (words !=null) {
@@ -86,12 +129,20 @@ public class Question implements Parcelable {
         return null;
     }
 
-    public String getLowerCase() {
-        return lowerCase;
+    private void setLowerCase(String lowerCase){
+        params.putString(PARAM_LOWER_CASE, lowerCase);
     }
 
-    private String addSpacePadding(String text) {
-        return new StringBuilder().append(" ").append(text).append(" ").toString();
+    public String getLowerCase() {
+        return params.getString(PARAM_LOWER_CASE);
+    }
+
+    private boolean notNull(){
+        return params.containsKey(PARAM_LOWER_CASE);
+    }
+
+    private String addSpacePadding(String string) {
+        return new StringBuilder().append(" ").append(string).append(" ").toString();
     }
 
     @Override
@@ -101,13 +152,11 @@ public class Question implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.raw);
-        dest.writeString(this.lowerCase);
+        dest.writeBundle(this.params);
     }
 
     protected Question(Parcel in) {
-        this.raw = in.readString();
-        this.lowerCase = in.readString();
+        this.params = in.readBundle();
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {

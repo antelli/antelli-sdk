@@ -46,13 +46,19 @@ public class AnswerItem implements Parcelable {
         speak(speech);
     }
 
+    public AnswerItem(String title, String subtitle, String text, String image, String speech, String command) {
+        this(title, subtitle, text, image, speech);
+        setCommand(command);
+    }
+
     public AnswerItem(String title, String subtitle, String text, String image, String speech, int type) {
-        setTitle(title);
-        setSubtitle(subtitle);
-        setText(text);
-        setImage(image);
+        this(title, subtitle, text, image, speech);
         setType(type);
-        speak(speech);
+    }
+
+    public AnswerItem(String title, String subtitle, String text, String image, String speech, String command, int type) {
+        this(title, subtitle, text, image, speech, type);
+        setCommand(command);
     }
 
     public String getText() {
