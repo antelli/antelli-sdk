@@ -1,4 +1,6 @@
-package cz.antelli.sdk;
+package io.antelli.sdk;
+
+import io.antelli.sdk.BuildConfig;
 
 /**
  * Handcrafted by Štěpán Šonský on 29.08.2017.
@@ -6,7 +8,7 @@ package cz.antelli.sdk;
 
 public class AntelliSDK {
 
-    public static int[] getApiVersion(){
+    public static int[] getApiVersion() {
         return new int[]{BuildConfig.VERSION_MAJOR, BuildConfig.VERSION_MINOR, BuildConfig.VERSION_PATCH};
     }
 

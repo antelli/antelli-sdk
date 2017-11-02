@@ -1,4 +1,4 @@
-package cz.antelli.sdk.model;
+package io.antelli.sdk.model;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -26,16 +26,16 @@ public class Answer implements Parcelable {
         addItem(new AnswerItem().setText(text).speak(text));
     }
 
-    public Answer(List<AnswerItem> items){
+    public Answer(List<AnswerItem> items) {
         this.items.addAll(items);
     }
 
-    public Answer addItem(AnswerItem item){
+    public Answer addItem(AnswerItem item) {
         this.items.add(item);
         return this;
     }
 
-    public void addItems(List<AnswerItem> item){
+    public void addItems(List<AnswerItem> item) {
         this.items.addAll(item);
     }
 
@@ -48,7 +48,7 @@ public class Answer implements Parcelable {
         return this;
     }
 
-    public void addTip(Tip tip){
+    public void addTip(Tip tip) {
         if (tips == null) {
             tips = new ArrayList<>();
         }

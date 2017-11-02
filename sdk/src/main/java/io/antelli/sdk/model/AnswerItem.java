@@ -1,11 +1,8 @@
-package cz.antelli.sdk.model;
+package io.antelli.sdk.model;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
 
 /**
  * Handcrafted by Štěpán Šonský on 27.08.2017.
@@ -128,7 +125,7 @@ public class AnswerItem implements Parcelable {
         return params.getString(PARAM_SPEECH);
     }
 
-    public AnswerItem speak(String text){
+    public AnswerItem speak(String text) {
         params.putString(PARAM_SPEECH, text);
         return this;
     }

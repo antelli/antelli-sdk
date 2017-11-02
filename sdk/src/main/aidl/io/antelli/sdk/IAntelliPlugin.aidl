@@ -1,7 +1,7 @@
-package cz.antelli.sdk;
-import cz.antelli.sdk.model.Answer;
-import cz.antelli.sdk.model.AnswerItem;
-import cz.antelli.sdk.model.Question;
+package io.antelli.sdk;
+import io.antelli.sdk.model.Answer;
+import io.antelli.sdk.model.AnswerItem;
+import io.antelli.sdk.model.Question;
 
 interface IAntelliPlugin {
     boolean canAnswer(in Question question);

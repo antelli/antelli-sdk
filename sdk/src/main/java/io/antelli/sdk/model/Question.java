@@ -1,4 +1,4 @@
-package cz.antelli.sdk.model;
+package io.antelli.sdk.model;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -22,7 +22,7 @@ public class Question implements Parcelable {
         }
     }
 
-    private void setRaw(String raw){
+    private void setRaw(String raw) {
         params.putString(PARAM_RAW, raw);
     }
 
@@ -30,13 +30,12 @@ public class Question implements Parcelable {
         return params.getString(PARAM_RAW);
     }
 
-    public boolean equals(String string){
-        if (notNull()){
-            if (string !=null) {
+    public boolean equals(String string) {
+        if (notNull()) {
+            if (string != null) {
                 return getLowerCase().equals(string.toLowerCase());
             }
-        }
-        else if(string == null){
+        } else if (string == null) {
             return true;
         }
         return false;
@@ -119,7 +118,7 @@ public class Question implements Parcelable {
         if (notNull()) {
             String result = addSpacePadding(getLowerCase());
 
-            if (words !=null) {
+            if (words != null) {
                 for (int i = 0; i < words.length; i++) {
                     result = result.replace(addSpacePadding(words[i]), " ");
                 }
@@ -129,7 +128,7 @@ public class Question implements Parcelable {
         return null;
     }
 
-    private void setLowerCase(String lowerCase){
+    private void setLowerCase(String lowerCase) {
         params.putString(PARAM_LOWER_CASE, lowerCase);
     }
 
@@ -137,7 +136,7 @@ public class Question implements Parcelable {
         return params.getString(PARAM_LOWER_CASE);
     }
 
-    private boolean notNull(){
+    private boolean notNull() {
         return params.containsKey(PARAM_LOWER_CASE);
     }
 
