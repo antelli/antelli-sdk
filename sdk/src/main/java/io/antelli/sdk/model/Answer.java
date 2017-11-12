@@ -23,7 +23,7 @@ public class Answer implements Parcelable {
     }
 
     public Answer(String text) {
-        addItem(new AnswerItem().setText(text).speak(text));
+        addItem(new AnswerItem().setText(text).setSpeech(text));
     }
 
     public Answer(List<AnswerItem> items) {
@@ -35,8 +35,9 @@ public class Answer implements Parcelable {
         return this;
     }
 
-    public void addItems(List<AnswerItem> item) {
+    public Answer addItems(List<AnswerItem> item) {
         this.items.addAll(item);
+        return this;
     }
 
     public boolean isAutoListen() {
@@ -57,6 +58,10 @@ public class Answer implements Parcelable {
 
     public List<AnswerItem> getItems() {
         return items;
+    }
+
+    public List<Tip> getTips() {
+        return tips;
     }
 
     @Override

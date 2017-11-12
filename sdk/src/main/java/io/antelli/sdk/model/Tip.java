@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class Tip implements Parcelable {
 
     private String title;
-    private String command;
+    private Command command;
 
     public Tip() {
     }
@@ -19,7 +19,7 @@ public class Tip implements Parcelable {
         this.title = title;
     }
 
-    public Tip(String title, String command) {
+    public Tip(String title, Command command) {
         this.title = title;
         this.command = command;
     }
@@ -32,11 +32,11 @@ public class Tip implements Parcelable {
         this.title = title;
     }
 
-    public String getCommand() {
+    public Command getCommand() {
         return command;
     }
 
-    public void setCommand(String command) {
+    public void setCommand(Command command) {
         this.command = command;
     }
 
@@ -48,12 +48,12 @@ public class Tip implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
-        dest.writeString(this.command);
+        dest.writeParcelable(this.command, flags);
     }
 
     protected Tip(Parcel in) {
         this.title = in.readString();
-        this.command = in.readString();
+        this.command = in.readParcelable(Command.class.getClassLoader());
     }
 
     public static final Creator<Tip> CREATOR = new Creator<Tip>() {

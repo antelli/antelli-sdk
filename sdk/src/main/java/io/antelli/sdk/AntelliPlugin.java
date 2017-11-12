@@ -7,7 +7,9 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import io.antelli.sdk.IAntelliPlugin;
+import io.antelli.sdk.callback.IAnswerCallback;
 import io.antelli.sdk.model.Answer;
+import io.antelli.sdk.model.Command;
 import io.antelli.sdk.model.Question;
 
 import static android.os.Binder.getCallingUid;
@@ -24,26 +26,29 @@ public abstract class AntelliPlugin extends Service {
 
     /**
      * Specify the conditions if your service can answer user's Question
+     * @param question
+     * @return true if your plugin is able to answer the question
+     * @throws RemoteException
      */
     protected abstract boolean canAnswer(Question question) throws RemoteException;
 
     /**
-     * Create Answer for user's Question
+     * Create and publish Answer for user's Question using callback.send(Answer)
      *
-     * @param question Input question from the user
-     * @return Answer for the user
+     * @param question User's question
+     * @param callback Use callback.send(Answer) to publish Answer back to Antelli
      * @throws RemoteException
      */
-    protected abstract Answer answer(Question question) throws RemoteException;
+    protected abstract void answer(Question question, IAnswerCallback callback) throws RemoteException;
 
     /**
-     * Create Answer for user's command (AnswerItem onClick or Tip onClick)
+     * Create and publish Answer for user's command using callback.send(Answer)
      *
-     * @param command Command from AnswerItem or Tip
-     * @return Answer for the user
+     * @param command User's command
+     * @param callback Use callback.send(Answer) to publish Answer back to Antelli
      * @throws RemoteException
      */
-    protected abstract Answer command(String command) throws RemoteException;
+    protected abstract void command(Command command, IAnswerCallback callback) throws RemoteException;
 
     /**
      * Reset all variables to default values, if you set some during the conversation
@@ -71,19 +76,17 @@ public abstract class AntelliPlugin extends Service {
             }
 
             @Override
-            public Answer answer(Question question) throws RemoteException {
+            public void answer(Question question, IAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
-                    return AntelliPlugin.this.answer(question);
+                    AntelliPlugin.this.answer(question, callback);
                 }
-                return null;
             }
 
             @Override
-            public Answer command(String command) throws RemoteException {
+            public void command(Command command, IAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
-                    return AntelliPlugin.this.command(command);
+                    AntelliPlugin.this.command(command, callback);
                 }
-                return null;
             }
 
             @Override

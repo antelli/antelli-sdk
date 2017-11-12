@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Handcrafted by Štěpán Šonský on 27.08.2017.
  */
@@ -13,14 +15,18 @@ public class AnswerItem implements Parcelable {
     private static final String PARAM_TITLE = "TITLE";
     private static final String PARAM_SUBTITLE = "SUBTITLE";
     private static final String PARAM_TEXT = "TEXT";
+    private static final String PARAM_LARGE_TEXT = "LARGE_TEXT";
     private static final String PARAM_IMAGE = "IMAGE";
     private static final String PARAM_IMAGE_SCALE_TYPE = "IMAGE_SCALE_TYPE";
     private static final String PARAM_COMMAND = "COMMAND";
     private static final String PARAM_SPEECH = "SPEECH";
+    private static final String PARAM_GALLERY = "GALLERY";
     private static final String PARAM_TYPE = "TYPE";
 
     public static final int TYPE_CONVERSATION = 0;
     public static final int TYPE_CARD = 1;
+    public static final int TYPE_CARD_IMAGE = 2;
+    public static final int TYPE_GALLERY = 3;
 
     public static final int IMAGE_CROP = 0;
     public static final int IMAGE_FIT = 1;
@@ -32,30 +38,7 @@ public class AnswerItem implements Parcelable {
 
     public AnswerItem(String text) {
         setText(text);
-        speak(text);
-    }
-
-    public AnswerItem(String title, String subtitle, String text, String image, String speech) {
-        setTitle(title);
-        setSubtitle(subtitle);
-        setText(text);
-        setImage(image);
-        speak(speech);
-    }
-
-    public AnswerItem(String title, String subtitle, String text, String image, String speech, String command) {
-        this(title, subtitle, text, image, speech);
-        setCommand(command);
-    }
-
-    public AnswerItem(String title, String subtitle, String text, String image, String speech, int type) {
-        this(title, subtitle, text, image, speech);
-        setType(type);
-    }
-
-    public AnswerItem(String title, String subtitle, String text, String image, String speech, String command, int type) {
-        this(title, subtitle, text, image, speech, type);
-        setCommand(command);
+        setSpeech(text);
     }
 
     public String getText() {
@@ -64,6 +47,15 @@ public class AnswerItem implements Parcelable {
 
     public AnswerItem setText(String text) {
         params.putString(PARAM_TEXT, text);
+        return this;
+    }
+
+    public String getLargeText() {
+        return params.getString(PARAM_LARGE_TEXT);
+    }
+
+    public AnswerItem setLargeText(String text) {
+        params.putString(PARAM_LARGE_TEXT, text);
         return this;
     }
 
@@ -94,6 +86,15 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
+    public Gallery getGallery(){
+        return params.getParcelable(PARAM_GALLERY);
+    }
+
+    public AnswerItem setGallery(Gallery gallery){
+        params.putParcelable(PARAM_GALLERY, gallery);
+        return this;
+    }
+
     public int getType() {
         return params.getInt(PARAM_TYPE, TYPE_CONVERSATION);
     }
@@ -103,12 +104,12 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
-    public String getCommand() {
-        return params.getString(PARAM_COMMAND);
+    public Command getCommand() {
+        return params.getParcelable(PARAM_COMMAND);
     }
 
-    public AnswerItem setCommand(String command) {
-        params.putString(PARAM_COMMAND, command);
+    public AnswerItem setCommand(Command command) {
+        params.putParcelable(PARAM_COMMAND, command);
         return this;
     }
 
@@ -125,7 +126,7 @@ public class AnswerItem implements Parcelable {
         return params.getString(PARAM_SPEECH);
     }
 
-    public AnswerItem speak(String text) {
+    public AnswerItem setSpeech(String text) {
         params.putString(PARAM_SPEECH, text);
         return this;
     }
@@ -141,7 +142,7 @@ public class AnswerItem implements Parcelable {
     }
 
     protected AnswerItem(Parcel in) {
-        this.params = in.readBundle();
+        this.params = in.readBundle(getClass().getClassLoader());
     }
 
     public static final Creator<AnswerItem> CREATOR = new Creator<AnswerItem>() {
