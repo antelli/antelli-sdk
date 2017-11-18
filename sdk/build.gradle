@@ -1,19 +1,18 @@
 apply plugin: 'com.android.library'
 
-final VERSION_MAJOR = 0
-final VERSION_MINOR = 12
-final VERSION_PATCH = 0
+final VERSION_MAJOR = 1
+final VERSION_MINOR = 0
+final VERSION_PATCH = 2
 
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
 
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "${VERSION_MAJOR}.${VERSION_MINOR}"
+        versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
         buildConfigField "int", "VERSION_MAJOR", "${VERSION_MAJOR}"
         buildConfigField "int", "VERSION_MINOR", "${VERSION_MINOR}"
         buildConfigField "int", "VERSION_PATCH", "${VERSION_PATCH}"
@@ -25,9 +24,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+ext {
+    bintrayRepo = 'antelli-sdk'
+    bintrayName = 'antelli-sdk'
+    orgName = 'stepansonsky'
+
+    publishedGroupId = 'io.antelli'
+    artifact = 'sdk'
+    libraryVersion = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+
+    libraryName = 'Antelli SDK'
+    libraryDescription = 'Antelli Open Assistant SDK'
+
+    siteUrl = 'https://github.com/stepansonsky/antelli-sdk'
+    gitUrl = 'https://github.com/stepansonsky/antelli-sdk.git'
+
+    developerId = 'stepansonsky'
+    developerName = 'Štěpán Šonský'
+    developerEmail = 'stepansonsky@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+//apply from: file('gradle/install-v1.gradle')
+//apply from: file('gradle/bintray-android-v1.gradle')

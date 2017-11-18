@@ -1,7 +1,5 @@
 package io.antelli.sdk;
 
-import io.antelli.sdk.BuildConfig;
-
 /**
  * Handcrafted by Štěpán Šonský on 29.08.2017.
  */

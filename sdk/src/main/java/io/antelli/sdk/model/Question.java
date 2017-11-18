@@ -12,14 +12,16 @@ public class Question implements Parcelable {
 
     private static final String PARAM_RAW = "RAW";
     private static final String PARAM_LOWER_CASE = "LOWER_CASE";
+    private static final String PARAM_LANGUAGE = "LANGUAGE";
 
     private Bundle params = new Bundle();
 
-    public Question(String raw) {
+    public Question(String raw, String language) {
         setRaw(raw);
         if (raw != null) {
             setLowerCase(raw.toLowerCase());
         }
+        setLanguage(language);
     }
 
     private void setRaw(String raw) {
@@ -136,6 +138,14 @@ public class Question implements Parcelable {
         return params.getString(PARAM_LOWER_CASE);
     }
 
+    private void setLanguage(String language) {
+        params.putString(PARAM_LANGUAGE, language);
+    }
+
+    public String getLanguage() {
+        return params.getString(PARAM_LANGUAGE);
+    }
+
     private boolean notNull() {
         return params.containsKey(PARAM_LOWER_CASE);
     }
@@ -155,7 +165,7 @@ public class Question implements Parcelable {
     }
 
     protected Question(Parcel in) {
-        this.params = in.readBundle();
+        this.params = in.readBundle(getClass().getClassLoader());
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {

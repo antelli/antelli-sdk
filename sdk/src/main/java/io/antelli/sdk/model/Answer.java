@@ -79,7 +79,7 @@ public class Answer implements Parcelable {
     protected Answer(Parcel in) {
         this.items = in.createTypedArrayList(AnswerItem.CREATOR);
         this.tips = in.createTypedArrayList(Tip.CREATOR);
-        this.params = in.readBundle();
+        this.params = in.readBundle(getClass().getClassLoader());
     }
 
     public static final Creator<Answer> CREATOR = new Creator<Answer>() {

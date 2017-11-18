@@ -1,14 +1,17 @@
 package io.antelli.sdk;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import io.antelli.sdk.IAntelliPlugin;
+import java.util.Locale;
+
 import io.antelli.sdk.callback.IAnswerCallback;
-import io.antelli.sdk.model.Answer;
 import io.antelli.sdk.model.Command;
 import io.antelli.sdk.model.Question;
 
@@ -26,9 +29,9 @@ public abstract class AntelliPlugin extends Service {
 
     /**
      * Specify the conditions if your service can answer user's Question
-     * @param question
+     * @param question User's question
      * @return true if your plugin is able to answer the question
-     * @throws RemoteException
+     * @throws RemoteException Implicit AIDL exception
      */
     protected abstract boolean canAnswer(Question question) throws RemoteException;
 
@@ -37,7 +40,7 @@ public abstract class AntelliPlugin extends Service {
      *
      * @param question User's question
      * @param callback Use callback.send(Answer) to publish Answer back to Antelli
-     * @throws RemoteException
+     * @throws RemoteException Implicit AIDL exception
      */
     protected abstract void answer(Question question, IAnswerCallback callback) throws RemoteException;
 
@@ -46,7 +49,7 @@ public abstract class AntelliPlugin extends Service {
      *
      * @param command User's command
      * @param callback Use callback.send(Answer) to publish Answer back to Antelli
-     * @throws RemoteException
+     * @throws RemoteException Implicit AIDL exception
      */
     protected abstract void command(Command command, IAnswerCallback callback) throws RemoteException;
 
@@ -112,5 +115,24 @@ public abstract class AntelliPlugin extends Service {
         PackageManager pm = getPackageManager();
         String packageName = pm.getNameForUid(getCallingUid());
         return (packageName != null && packageName.equals(ANTELLI_PACKAGE_NAME));
+    }
+
+    protected String getLocalizedString(int resId, String language) {
+        return getLocalizedContext(language).getResources().getString(resId);
+    }
+
+    protected String getLocalizedString(int resId, String language, Object... formatArgs) {
+        return getLocalizedContext(language).getResources().getString(resId, formatArgs);
+    }
+
+    protected String[] getLocalizedStringArray(int resId, String language) {
+        return getLocalizedContext(language).getResources().getStringArray(resId);
+    }
+
+    private Context getLocalizedContext(String language){
+        Configuration conf = getResources().getConfiguration();
+        conf = new Configuration(conf);
+        conf.setLocale(new Locale(language));
+        return createConfigurationContext(conf);
     }
 }
