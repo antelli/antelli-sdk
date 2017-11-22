@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -25,7 +24,6 @@ public abstract class AntelliPlugin extends Service {
 
     private static final String ANTELLI_PACKAGE_NAME = "io.antelli.assistant";
     public static final String ACTION_ANSWER = "io.antelli.assistant.ANSWER";
-
 
     /**
      * Specify the conditions if your service can answer user's Question
@@ -117,19 +115,7 @@ public abstract class AntelliPlugin extends Service {
         return (packageName != null && packageName.equals(ANTELLI_PACKAGE_NAME));
     }
 
-    protected String getLocalizedString(int resId, String language) {
-        return getLocalizedContext(language).getResources().getString(resId);
-    }
-
-    protected String getLocalizedString(int resId, String language, Object... formatArgs) {
-        return getLocalizedContext(language).getResources().getString(resId, formatArgs);
-    }
-
-    protected String[] getLocalizedStringArray(int resId, String language) {
-        return getLocalizedContext(language).getResources().getStringArray(resId);
-    }
-
-    private Context getLocalizedContext(String language){
+    protected Context getContext(String language){
         Configuration conf = getResources().getConfiguration();
         conf = new Configuration(conf);
         conf.setLocale(new Locale(language));
