@@ -10,32 +10,29 @@ import android.os.Parcelable;
 
 public class Question implements Parcelable {
 
-    private static final String PARAM_STRING = "STRING";
+    private static final String PARAM_QUERY = "QUERY";
     private static final String PARAM_LANGUAGE = "LANGUAGE";
+    private static final String PARAM_ACTION = "ACTION";
 
     private Bundle params = new Bundle();
 
-    public Question(String string, String language) {
-        if (string != null) {
-            setString(string.toLowerCase());
+    public Question(String query, String language) {
+        if (query != null) {
+            setQuery(query.toLowerCase());
         }
         setLanguage(language);
     }
 
     public boolean equals(String string) {
-        if (notNull()) {
-            if (string != null) {
-                return getString().equals(string.toLowerCase());
-            }
-        } else if (string == null) {
-            return true;
+        if (notNull() && string != null) {
+            return getQuery().equals(string.toLowerCase());
         }
         return false;
     }
 
     public boolean contains(String string) {
-        if (notNull()) {
-            return getString().contains(string.toLowerCase());
+        if (notNull() && string != null) {
+            return getQuery().contains(string.toLowerCase());
         }
         return false;
     }
@@ -43,7 +40,7 @@ public class Question implements Parcelable {
     public boolean containsOne(String... strings) {
         if (notNull() && strings != null) {
             for (int i = 0; i < strings.length; i++) {
-                if (getString().contains(strings[i].toLowerCase())) {
+                if (getQuery().contains(strings[i].toLowerCase())) {
                     return true;
                 }
             }
@@ -55,7 +52,7 @@ public class Question implements Parcelable {
     public boolean containsAll(String... strings) {
         if (notNull() && strings != null) {
             for (int i = 0; i < strings.length; i++) {
-                if (!getString().contains(strings[i].toLowerCase())) {
+                if (!getQuery().contains(strings[i].toLowerCase())) {
                     return false;
                 }
             }
@@ -65,16 +62,16 @@ public class Question implements Parcelable {
     }
 
     public boolean containsWord(String word) {
-        if (notNull()) {
-            String input = addSpacePadding(getString());
-            return input.contains(addSpacePadding(word));
+        if (notNull() && word != null) {
+            String input = addSpacePadding(getQuery());
+            return input.contains(addSpacePadding(word.toString()));
         }
         return false;
     }
 
     public boolean containsOneWord(String... words) {
         if (notNull() && words != null) {
-            String input = addSpacePadding(getString());
+            String input = addSpacePadding(getQuery());
             for (int i = 0; i < words.length; i++) {
                 if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
                     return true;
@@ -87,7 +84,7 @@ public class Question implements Parcelable {
 
     public boolean containsAllWords(String... words) {
         if (notNull() && words != null) {
-            String input = addSpacePadding(getString());
+            String input = addSpacePadding(getQuery());
 
             for (int i = 0; i < words.length; i++) {
                 if (!input.contains(addSpacePadding(words[i]))) {
@@ -100,15 +97,15 @@ public class Question implements Parcelable {
     }
 
     public boolean startsWith(String prefix) {
-        if (notNull()) {
-            return getString().startsWith(prefix);
+        if (notNull() && prefix != null) {
+            return getQuery().startsWith(prefix.toLowerCase());
         }
         return false;
     }
 
     public String removeWords(String... words) {
         if (notNull()) {
-            String result = addSpacePadding(getString());
+            String result = addSpacePadding(getQuery());
 
             if (words != null) {
                 for (int i = 0; i < words.length; i++) {
@@ -120,15 +117,15 @@ public class Question implements Parcelable {
         return null;
     }
 
-    private void setString(String lowerCase) {
-        params.putString(PARAM_STRING, lowerCase);
+    private void setQuery(String lowerCase) {
+        params.putString(PARAM_QUERY, lowerCase);
     }
 
-    public String getString() {
-        return params.getString(PARAM_STRING);
+    public String getQuery() {
+        return params.getString(PARAM_QUERY);
     }
 
-    private void setLanguage(String language) {
+    public void setLanguage(String language) {
         params.putString(PARAM_LANGUAGE, language);
     }
 
@@ -136,8 +133,36 @@ public class Question implements Parcelable {
         return params.getString(PARAM_LANGUAGE);
     }
 
+    public void setAction(String action) {
+        params.putString(PARAM_ACTION, action);
+    }
+
+    public String getAction() {
+        return params.getString(PARAM_ACTION);
+    }
+
+    public boolean hasAction(String action) {
+        String questionAction = getAction();
+        if (questionAction != null) {
+            return questionAction.equals(action);
+        }
+        return false;
+    }
+
+    public boolean hasAction(String... actions) {
+        String questionAction = getAction();
+        if (questionAction != null && actions != null) {
+            for (int i = 0; i < actions.length; i++) {
+                if (questionAction.equals(actions[i])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean notNull() {
-        return params.containsKey(PARAM_STRING);
+        return params.containsKey(PARAM_QUERY);
     }
 
     private String addSpacePadding(String string) {

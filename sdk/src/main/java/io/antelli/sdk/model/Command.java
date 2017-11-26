@@ -14,12 +14,12 @@ public class Command implements Parcelable{
 
     private Bundle params = new Bundle();
 
-    public Command(int action) {
-        params.putInt(PARAM_ACTION, action);
+    public Command(String action) {
+        params.putString(PARAM_ACTION, action);
     }
 
-    public int getAction(){
-        return params.getInt(PARAM_ACTION);
+    public String getAction(){
+        return params.getString(PARAM_ACTION);
     }
 
     public Command putBoolean(String name, boolean value){

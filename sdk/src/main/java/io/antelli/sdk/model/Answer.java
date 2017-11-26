@@ -56,6 +56,11 @@ public class Answer implements Parcelable {
         tips.add(tip);
     }
 
+    public Answer setTips(List<Tip> tips){
+        this.tips = tips;
+        return this;
+    }
+
     public List<AnswerItem> getItems() {
         return items;
     }
