@@ -10,6 +10,7 @@ import android.os.RemoteException;
 
 import java.util.Locale;
 
+import io.antelli.sdk.callback.ICanAnswerCallback;
 import io.antelli.sdk.callback.IAnswerCallback;
 import io.antelli.sdk.model.Command;
 import io.antelli.sdk.model.Question;
@@ -31,7 +32,7 @@ public abstract class AntelliPlugin extends Service {
      * @return true if your plugin is able to answer the question
      * @throws RemoteException Implicit AIDL exception
      */
-    protected abstract boolean canAnswer(Question question) throws RemoteException;
+    protected abstract void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException;
 
     /**
      * Create and publish Answer for user's Question using callback.send(Answer)
@@ -69,11 +70,10 @@ public abstract class AntelliPlugin extends Service {
         return new IAntelliPlugin.Stub() {
 
             @Override
-            public boolean canAnswer(Question question) throws RemoteException {
+            public void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
-                    return AntelliPlugin.this.canAnswer(question);
+                    AntelliPlugin.this.canAnswer(question, callback);
                 }
-                return false;
             }
 
             @Override
@@ -118,7 +118,7 @@ public abstract class AntelliPlugin extends Service {
     protected Context getContext(String language){
         Configuration conf = getResources().getConfiguration();
         conf = new Configuration(conf);
-        conf.setLocale(new Locale(language));
+        conf.setLocale(new Locale(language.replace("-", "_")));
         return createConfigurationContext(conf);
     }
 }

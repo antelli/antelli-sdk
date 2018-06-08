@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Handcrafted by Štěpán Šonský on 28.08.2017.
  */
@@ -12,7 +15,6 @@ public class Question implements Parcelable {
 
     private static final String PARAM_QUERY = "QUERY";
     private static final String PARAM_LANGUAGE = "LANGUAGE";
-    private static final String PARAM_ACTION = "ACTION";
 
     private Bundle params = new Bundle();
 
@@ -26,6 +28,17 @@ public class Question implements Parcelable {
     public boolean equals(String string) {
         if (notNull() && string != null) {
             return getQuery().equals(string.toLowerCase());
+        }
+        return false;
+    }
+
+    public boolean equalsOne(String[] strings) {
+        if (notNull() && strings != null) {
+            for (String string : strings) {
+                if (getQuery().equals(string)){
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -117,6 +130,45 @@ public class Question implements Parcelable {
         return null;
     }
 
+    public String[] getWords() {
+        return getQuery().split(" ");
+    }
+
+    public String getWordAt(int position) {
+        String[] words = getWords();
+        if (position < words.length) {
+            return words[position];
+        }
+        return null;
+    }
+
+    public int getWordPosition(String word) {
+        String[] words = getWords();
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int[] getNumbers() {
+        List<Integer> list = new ArrayList<>();
+        for (String word : getWords()) {
+            try {
+                int number = Integer.parseInt(word);
+                list.add(number);
+            } catch (NumberFormatException e) {
+                //continue
+            }
+        }
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
     private void setQuery(String lowerCase) {
         params.putString(PARAM_QUERY, lowerCase);
     }
@@ -133,32 +185,12 @@ public class Question implements Parcelable {
         return params.getString(PARAM_LANGUAGE);
     }
 
-    public void setAction(String action) {
-        params.putString(PARAM_ACTION, action);
+    public void setParam(String name, String value) {
+        params.putString(name, value);
     }
 
-    public String getAction() {
-        return params.getString(PARAM_ACTION);
-    }
-
-    public boolean hasAction(String action) {
-        String questionAction = getAction();
-        if (questionAction != null) {
-            return questionAction.equals(action);
-        }
-        return false;
-    }
-
-    public boolean hasAction(String... actions) {
-        String questionAction = getAction();
-        if (questionAction != null && actions != null) {
-            for (int i = 0; i < actions.length; i++) {
-                if (questionAction.equals(actions[i])) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public String getParam(String name) {
+        return params.getString(name);
     }
 
     private boolean notNull() {

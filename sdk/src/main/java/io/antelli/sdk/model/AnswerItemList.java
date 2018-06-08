@@ -10,19 +10,20 @@ import java.util.List;
  * Handcrafted by Štěpán Šonský on 12.11.2017.
  */
 
-public class Gallery implements Parcelable {
+class AnswerItemList implements Parcelable {
 
     private List<AnswerItem> items = new ArrayList<>();
 
-    public Gallery() {
+    public AnswerItemList(List<AnswerItem> items) {
+        this.items = items;
     }
 
-    public Gallery addItem(AnswerItem item) {
+    public AnswerItemList add(AnswerItem item) {
         this.items.add(item);
         return this;
     }
 
-    public Gallery addItems(List<AnswerItem> item) {
+    public AnswerItemList addAll(List<AnswerItem> item) {
         this.items.addAll(item);
         return this;
     }
@@ -41,19 +42,19 @@ public class Gallery implements Parcelable {
         dest.writeTypedList(this.items);
     }
 
-    protected Gallery(Parcel in) {
+    protected AnswerItemList(Parcel in) {
         this.items = in.createTypedArrayList(AnswerItem.CREATOR);
     }
 
-    public static final Creator<Gallery> CREATOR = new Creator<Gallery>() {
+    public static final Creator<AnswerItemList> CREATOR = new Creator<AnswerItemList>() {
         @Override
-        public Gallery createFromParcel(Parcel source) {
-            return new Gallery(source);
+        public AnswerItemList createFromParcel(Parcel source) {
+            return new AnswerItemList(source);
         }
 
         @Override
-        public Gallery[] newArray(int size) {
-            return new Gallery[size];
+        public AnswerItemList[] newArray(int size) {
+            return new AnswerItemList[size];
         }
     };
 }

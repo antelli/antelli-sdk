@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handcrafted by Štěpán Šonský on 27.08.2017.
@@ -17,10 +17,11 @@ public class AnswerItem implements Parcelable {
     private static final String PARAM_TEXT = "TEXT";
     private static final String PARAM_LARGE_TEXT = "LARGE_TEXT";
     private static final String PARAM_IMAGE = "IMAGE";
+    private static final String PARAM_SECONDARY_IMAGE = "SECONDARY_IMAGE";
     private static final String PARAM_IMAGE_SCALE_TYPE = "IMAGE_SCALE_TYPE";
     private static final String PARAM_COMMAND = "COMMAND";
     private static final String PARAM_SPEECH = "SPEECH";
-    private static final String PARAM_GALLERY = "GALLERY";
+    private static final String PARAM_ITEMS = "ITEMS";
     private static final String PARAM_TYPE = "TYPE";
 
     public static final int TYPE_CONVERSATION = 0;
@@ -86,12 +87,26 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
-    public Gallery getGallery(){
-        return params.getParcelable(PARAM_GALLERY);
+    public String getSecondaryImage() {
+        return params.getString(PARAM_SECONDARY_IMAGE);
     }
 
-    public AnswerItem setGallery(Gallery gallery){
-        params.putParcelable(PARAM_GALLERY, gallery);
+    public AnswerItem setSecondaryImage(String secondaryImage) {
+        params.putString(PARAM_SECONDARY_IMAGE, secondaryImage);
+        return this;
+    }
+
+    public List<AnswerItem> getItems(){
+        AnswerItemList wrapper = params.getParcelable(PARAM_ITEMS);
+        if (wrapper != null){
+            return wrapper.getItems();
+        }
+        return null;
+    }
+
+    public AnswerItem setItems(List<AnswerItem> items){
+        AnswerItemList wrapper = new AnswerItemList(items);
+        params.putParcelable(PARAM_ITEMS, wrapper);
         return this;
     }
 
