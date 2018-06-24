@@ -130,6 +130,22 @@ public class Question implements Parcelable {
         return null;
     }
 
+    public String removeWords(String[]... words) {
+        if (notNull()) {
+            String result = addSpacePadding(getQuery());
+
+            if (words != null) {
+                for (int i = 0; i < words.length; i++) {
+                    for (int j = 0; j < words[i].length; j++) {
+                        result = result.replace(addSpacePadding(words[i][j]), " ");
+                    }
+                }
+            }
+            return result.trim();
+        }
+        return null;
+    }
+
     public String[] getWords() {
         return getQuery().split(" ");
     }

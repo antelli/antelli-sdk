@@ -26,8 +26,10 @@ public class AnswerItem implements Parcelable {
 
     public static final int TYPE_CONVERSATION = 0;
     public static final int TYPE_CARD = 1;
-    public static final int TYPE_CARD_IMAGE = 2;
-    public static final int TYPE_GALLERY = 3;
+    public static final int TYPE_IMAGE = 2;
+    public static final int TYPE_CAROUSEL_SMALL = 3;
+    public static final int TYPE_CAROUSEL_MEDIUM = 4;
+    public static final int TYPE_CAROUSEL_LARGE = 5;
 
     public static final int IMAGE_CROP = 0;
     public static final int IMAGE_FIT = 1;
@@ -35,11 +37,6 @@ public class AnswerItem implements Parcelable {
     private Bundle params = new Bundle();
 
     public AnswerItem() {
-    }
-
-    public AnswerItem(String text) {
-        setText(text);
-        setSpeech(text);
     }
 
     public String getText() {

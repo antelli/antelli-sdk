@@ -12,7 +12,7 @@ import java.util.List;
 
 class AnswerItemList implements Parcelable {
 
-    private List<AnswerItem> items = new ArrayList<>();
+    private List<AnswerItem> items;
 
     public AnswerItemList(List<AnswerItem> items) {
         this.items = items;

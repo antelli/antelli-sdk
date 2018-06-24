@@ -1,5 +1,6 @@
 package io.antelli.sdk.model;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,9 +15,10 @@ import java.util.List;
 public class Answer implements Parcelable {
 
     private static final String PARAM_AUTO_LISTEN = "AUTO_LISTEN";
+    private static final String PARAM_AUTO_RUN = "AUTO_RUN";
 
     private List<AnswerItem> items = new ArrayList<>();
-    private List<Tip> tips;
+    private List<Hint> hints;
     private Bundle params = new Bundle();
 
     public Answer() {
@@ -49,24 +51,33 @@ public class Answer implements Parcelable {
         return this;
     }
 
-    public void addTip(Tip tip) {
-        if (tips == null) {
-            tips = new ArrayList<>();
+    public void addHint(Hint hint) {
+        if (hints == null) {
+            hints = new ArrayList<>();
         }
-        tips.add(tip);
+        hints.add(hint);
     }
 
-    public Answer setTips(List<Tip> tips){
-        this.tips = tips;
+    public Answer setHints(List<Hint> hints){
+        this.hints = hints;
         return this;
+    }
+
+    public Answer setAutoRun(Intent intent){
+        params.putParcelable(PARAM_AUTO_RUN, intent);
+        return this;
+    }
+
+    public Intent getAutoRun(){
+        return params.getParcelable(PARAM_AUTO_RUN);
     }
 
     public List<AnswerItem> getItems() {
         return items;
     }
 
-    public List<Tip> getTips() {
-        return tips;
+    public List<Hint> getHints() {
+        return hints;
     }
 
     @Override
@@ -77,13 +88,13 @@ public class Answer implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.items);
-        dest.writeTypedList(this.tips);
+        dest.writeTypedList(this.hints);
         dest.writeBundle(this.params);
     }
 
     protected Answer(Parcel in) {
         this.items = in.createTypedArrayList(AnswerItem.CREATOR);
-        this.tips = in.createTypedArrayList(Tip.CREATOR);
+        this.hints = in.createTypedArrayList(Hint.CREATOR);
         this.params = in.readBundle(getClass().getClassLoader());
     }
 

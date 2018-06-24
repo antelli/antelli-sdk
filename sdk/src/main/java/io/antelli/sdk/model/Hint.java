@@ -7,19 +7,19 @@ import android.os.Parcelable;
  * Handcrafted by Štěpán Šonský on 28.08.2017.
  */
 
-public class Tip implements Parcelable {
+public class Hint implements Parcelable {
 
     private String title;
     private Command command;
 
-    public Tip() {
+    public Hint() {
     }
 
-    public Tip(String title) {
+    public Hint(String title) {
         this.title = title;
     }
 
-    public Tip(String title, Command command) {
+    public Hint(String title, Command command) {
         this.title = title;
         this.command = command;
     }
@@ -51,20 +51,20 @@ public class Tip implements Parcelable {
         dest.writeParcelable(this.command, flags);
     }
 
-    protected Tip(Parcel in) {
+    protected Hint(Parcel in) {
         this.title = in.readString();
         this.command = in.readParcelable(Command.class.getClassLoader());
     }
 
-    public static final Creator<Tip> CREATOR = new Creator<Tip>() {
+    public static final Creator<Hint> CREATOR = new Creator<Hint>() {
         @Override
-        public Tip createFromParcel(Parcel source) {
-            return new Tip(source);
+        public Hint createFromParcel(Parcel source) {
+            return new Hint(source);
         }
 
         @Override
-        public Tip[] newArray(int size) {
-            return new Tip[size];
+        public Hint[] newArray(int size) {
+            return new Hint[size];
         }
     };
 }

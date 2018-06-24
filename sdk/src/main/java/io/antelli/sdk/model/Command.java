@@ -1,5 +1,7 @@
 package io.antelli.sdk.model;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,12 +12,19 @@ import android.os.Parcelable;
 
 public class Command implements Parcelable{
 
-    public static final String PARAM_ACTION = "ACTION";
+    private static final String PARAM_ACTION = "ACTION";
+    private static final String PARAM_INTENT = "INTENT";
+    private static final String ACTION_INTENT = "intent";
 
     private Bundle params = new Bundle();
 
     public Command(String action) {
         params.putString(PARAM_ACTION, action);
+    }
+
+    public Command(Intent intent) {
+        params.putString(PARAM_ACTION, ACTION_INTENT);
+        params.putParcelable(PARAM_INTENT, intent);
     }
 
     public String getAction(){
@@ -47,6 +56,11 @@ public class Command implements Parcelable{
         return this;
     }
 
+    public Command putParcelable(String name, Parcelable value){
+        params.putParcelable(name, value);
+        return this;
+    }
+
     public boolean getBoolean(String name){
         return params.getBoolean(name, false);
     }
@@ -65,6 +79,14 @@ public class Command implements Parcelable{
 
     public String getString(String name){
         return params.getString(name);
+    }
+
+    public String getParcelable(String name){
+        return params.getParcelable(name);
+    }
+
+    public Intent getIntent(){
+        return params.getParcelable(PARAM_INTENT);
     }
 
     @Override
