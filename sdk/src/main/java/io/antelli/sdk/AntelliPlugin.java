@@ -29,7 +29,7 @@ public abstract class AntelliPlugin extends Service {
     /**
      * Specify the conditions if your service can answer user's Question
      * @param question User's question
-     * @return true if your plugin is able to answer the question
+     * @param callback Use callback.canAnswer(Boolean) to tell Antelli, wheter your plugin can answer the question or not
      * @throws RemoteException Implicit AIDL exception
      */
     protected abstract void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException;
@@ -38,7 +38,7 @@ public abstract class AntelliPlugin extends Service {
      * Create and publish Answer for user's Question using callback.send(Answer)
      *
      * @param question User's question
-     * @param callback Use callback.send(Answer) to publish Answer back to Antelli
+     * @param callback Use callback.answer(Answer) to publish Answer back to Antelli
      * @throws RemoteException Implicit AIDL exception
      */
     protected abstract void answer(Question question, IAnswerCallback callback) throws RemoteException;
@@ -47,7 +47,7 @@ public abstract class AntelliPlugin extends Service {
      * Create and publish Answer for user's command using callback.send(Answer)
      *
      * @param command User's command
-     * @param callback Use callback.send(Answer) to publish Answer back to Antelli
+     * @param callback Use callback.answer(Answer) to publish Answer back to Antelli
      * @throws RemoteException Implicit AIDL exception
      */
     protected abstract void command(Command command, IAnswerCallback callback) throws RemoteException;
