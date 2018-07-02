@@ -3,6 +3,7 @@ package io.antelli.sdk.model;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class AnswerItem implements Parcelable {
     private static final String PARAM_COMMAND = "COMMAND";
     private static final String PARAM_SPEECH = "SPEECH";
     private static final String PARAM_ITEMS = "ITEMS";
+    private static final String PARAM_HINTS = "HINTS";
     private static final String PARAM_TYPE = "TYPE";
 
     public static final int TYPE_CONVERSATION = 0;
@@ -30,9 +32,6 @@ public class AnswerItem implements Parcelable {
     public static final int TYPE_CAROUSEL_SMALL = 3;
     public static final int TYPE_CAROUSEL_MEDIUM = 4;
     public static final int TYPE_CAROUSEL_LARGE = 5;
-
-    public static final int IMAGE_CROP = 0;
-    public static final int IMAGE_FIT = 1;
 
     private Bundle params = new Bundle();
 
@@ -107,6 +106,20 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
+    public List<Hint> getHints(){
+        HintList wrapper = params.getParcelable(PARAM_HINTS);
+        if (wrapper != null){
+            return wrapper.getHints();
+        }
+        return null;
+    }
+
+    public AnswerItem setHints(List<Hint> hints){
+        HintList wrapper = new HintList(hints);
+        params.putParcelable(PARAM_HINTS, wrapper);
+        return this;
+    }
+
     public int getType() {
         return params.getInt(PARAM_TYPE, TYPE_CONVERSATION);
     }
@@ -125,12 +138,12 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
-    public int getImageScaleType() {
-        return params.getInt(PARAM_IMAGE_SCALE_TYPE, IMAGE_CROP);
+    public ImageView.ScaleType getImageScaleType() {
+        return params.containsKey(PARAM_IMAGE_SCALE_TYPE) ? ImageView.ScaleType.valueOf(params.getString(PARAM_IMAGE_SCALE_TYPE)) : null;
     }
 
-    public AnswerItem setImageScaleType(int imageScaleType) {
-        params.putInt(PARAM_IMAGE_SCALE_TYPE, imageScaleType);
+    public AnswerItem setImageScaleType(ImageView.ScaleType imageScaleType) {
+        params.putString(PARAM_IMAGE_SCALE_TYPE, imageScaleType.name());
         return this;
     }
 
