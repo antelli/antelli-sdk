@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 final VERSION_MAJOR = 1
 final VERSION_MINOR = 2
-final VERSION_PATCH = 0
+final VERSION_PATCH = 1
 
 android {
     compileSdkVersion 28
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
+        versionCode 4
         versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
         buildConfigField "int", "VERSION_MAJOR", "${VERSION_MAJOR}"
         buildConfigField "int", "VERSION_MINOR", "${VERSION_MINOR}"
