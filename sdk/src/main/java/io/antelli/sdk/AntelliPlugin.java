@@ -1,5 +1,6 @@
 package io.antelli.sdk;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -62,7 +63,7 @@ public abstract class AntelliPlugin extends Service {
      *
      * @return Settings Activity Class
      */
-    protected abstract Class getSettingsActivity();
+    protected abstract Class<? extends Activity> getSettingsActivity();
 
     @Override
     public IBinder onBind(Intent intent) {

@@ -18,7 +18,6 @@ public class Answer implements Parcelable {
     private static final String PARAM_AUTO_RUN = "AUTO_RUN";
 
     private List<AnswerItem> items = new ArrayList<>();
-    private List<Hint> hints;
     private Bundle params = new Bundle();
 
     public Answer() {
@@ -51,18 +50,6 @@ public class Answer implements Parcelable {
         return this;
     }
 
-    public void addHint(Hint hint) {
-        if (hints == null) {
-            hints = new ArrayList<>();
-        }
-        hints.add(hint);
-    }
-
-    public Answer setHints(List<Hint> hints){
-        this.hints = hints;
-        return this;
-    }
-
     public Answer setAutoRun(Intent intent){
         params.putParcelable(PARAM_AUTO_RUN, intent);
         return this;
@@ -76,10 +63,6 @@ public class Answer implements Parcelable {
         return items;
     }
 
-    public List<Hint> getHints() {
-        return hints;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -88,13 +71,11 @@ public class Answer implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.items);
-        dest.writeTypedList(this.hints);
         dest.writeBundle(this.params);
     }
 
     protected Answer(Parcel in) {
         this.items = in.createTypedArrayList(AnswerItem.CREATOR);
-        this.hints = in.createTypedArrayList(Hint.CREATOR);
         this.params = in.readBundle(getClass().getClassLoader());
     }
 

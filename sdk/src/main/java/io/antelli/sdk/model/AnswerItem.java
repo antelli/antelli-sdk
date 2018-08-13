@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,6 +107,16 @@ public class AnswerItem implements Parcelable {
         return this;
     }
 
+    public AnswerItem addItem(AnswerItem item){
+        List<AnswerItem> items = getItems();
+        if (items == null){
+            items = new ArrayList<>();
+        }
+        items.add(item);
+        setItems(items);
+        return this;
+    }
+
     public List<Hint> getHints(){
         HintList wrapper = params.getParcelable(PARAM_HINTS);
         if (wrapper != null){
@@ -117,6 +128,16 @@ public class AnswerItem implements Parcelable {
     public AnswerItem setHints(List<Hint> hints){
         HintList wrapper = new HintList(hints);
         params.putParcelable(PARAM_HINTS, wrapper);
+        return this;
+    }
+
+    public AnswerItem addHint(Hint hint){
+        List<Hint> hints = getHints();
+        if (hints == null){
+            hints = new ArrayList<>();
+        }
+        hints.add(hint);
+        setHints(hints);
         return this;
     }
 
