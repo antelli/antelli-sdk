@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 final VERSION_MAJOR = 1
 final VERSION_MINOR = 4
-final VERSION_PATCH = 0
+final VERSION_PATCH = 1
 
 android {
     compileSdkVersion 28
@@ -24,10 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-dependencies {
-    implementation 'androidx.annotation:annotation:1.0.0'
 }
 
 ext {
