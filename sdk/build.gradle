@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 final VERSION_MAJOR = 1
-final VERSION_MINOR = 3
+final VERSION_MINOR = 4
 final VERSION_PATCH = 0
 
 android {
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
+        versionCode 5
         versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
         buildConfigField "int", "VERSION_MAJOR", "${VERSION_MAJOR}"
         buildConfigField "int", "VERSION_MINOR", "${VERSION_MINOR}"
@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.0.0'
 }
 
 ext {

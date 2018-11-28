@@ -26,6 +26,7 @@ public class AnswerItem implements Parcelable {
     private static final String PARAM_ITEMS = "ITEMS";
     private static final String PARAM_HINTS = "HINTS";
     private static final String PARAM_TYPE = "TYPE";
+    private static final String PARAM_STREAM = "STREAM";
 
     public static final int TYPE_CONVERSATION = 0;
     public static final int TYPE_CARD = 1;
@@ -33,6 +34,8 @@ public class AnswerItem implements Parcelable {
     public static final int TYPE_CAROUSEL_SMALL = 3;
     public static final int TYPE_CAROUSEL_MEDIUM = 4;
     public static final int TYPE_CAROUSEL_LARGE = 5;
+    public static final int TYPE_AUDIO = 6;
+    public static final int TYPE_VIDEO = 7;
 
     private Bundle params = new Bundle();
 
@@ -165,6 +168,15 @@ public class AnswerItem implements Parcelable {
 
     public AnswerItem setImageScaleType(ImageView.ScaleType imageScaleType) {
         params.putString(PARAM_IMAGE_SCALE_TYPE, imageScaleType.name());
+        return this;
+    }
+
+    public String getStream() {
+        return params.getString(PARAM_STREAM);
+    }
+
+    public AnswerItem setStream(String stream) {
+        params.putString(PARAM_STREAM, stream);
         return this;
     }
 

@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Handcrafted by Štěpán Šonský on 28.08.2017.
  */
@@ -18,132 +20,94 @@ public class Question implements Parcelable {
 
     private Bundle params = new Bundle();
 
-    public Question(String query, String language) {
-        if (query != null) {
-            setQuery(query.toLowerCase());
-        }
+    public Question(@NonNull String query, @NonNull String language) {
+        setQuery(query.toLowerCase());
         setLanguage(language);
     }
 
-    public boolean equals(String string) {
-        if (notNull() && string != null) {
-            return getQuery().equals(string.toLowerCase());
-        }
-        return false;
+    public boolean equals(@NonNull String string) {
+        return getQuery().equals(string.toLowerCase());
     }
 
-    public boolean equalsOne(String[] strings) {
-        if (notNull() && strings != null) {
-            for (String string : strings) {
-                if (getQuery().equals(string)){
-                    return true;
-                }
+    public boolean equalsOne(@NonNull String[] strings) {
+        for (String string : strings) {
+            if (getQuery().equals(string)) {
+                return true;
             }
         }
         return false;
     }
 
-    public boolean contains(String string) {
-        if (notNull() && string != null) {
-            return getQuery().contains(string.toLowerCase());
-        }
-        return false;
+    public boolean contains(@NonNull String string) {
+        return getQuery().contains(string.toLowerCase());
     }
 
-    public boolean containsOne(String... strings) {
-        if (notNull() && strings != null) {
-            for (int i = 0; i < strings.length; i++) {
-                if (getQuery().contains(strings[i].toLowerCase())) {
-                    return true;
-                }
+    public boolean containsOne(@NonNull String... strings) {
+        for (String string : strings) {
+            if (getQuery().contains(string.toLowerCase())) {
+                return true;
             }
-            return false;
         }
         return false;
     }
 
-    public boolean containsAll(String... strings) {
-        if (notNull() && strings != null) {
-            for (int i = 0; i < strings.length; i++) {
-                if (!getQuery().contains(strings[i].toLowerCase())) {
-                    return false;
-                }
+    public boolean containsAll(@NonNull String... strings) {
+        for (String string : strings) {
+            if (!getQuery().contains(string.toLowerCase())) {
+                return false;
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
-    public boolean containsWord(String word) {
-        if (notNull() && word != null) {
-            String input = addSpacePadding(getQuery());
-            return input.contains(addSpacePadding(word.toString()));
-        }
-        return false;
+    public boolean containsWord(@NonNull String word) {
+        String input = addSpacePadding(getQuery());
+        return input.contains(addSpacePadding(word.toString()));
     }
 
-    public boolean containsOneWord(String... words) {
-        if (notNull() && words != null) {
-            String input = addSpacePadding(getQuery());
-            for (int i = 0; i < words.length; i++) {
-                if (input.contains(addSpacePadding(words[i].toLowerCase()))) {
-                    return true;
-                }
+    public boolean containsOneWord(@NonNull String... words) {
+        String input = addSpacePadding(getQuery());
+        for (String word : words) {
+            if (input.contains(addSpacePadding(word.toLowerCase()))) {
+                return true;
             }
-            return false;
         }
         return false;
     }
 
-    public boolean containsAllWords(String... words) {
-        if (notNull() && words != null) {
-            String input = addSpacePadding(getQuery());
-
-            for (int i = 0; i < words.length; i++) {
-                if (!input.contains(addSpacePadding(words[i]))) {
-                    return false;
-                }
+    public boolean containsAllWords(@NonNull String... words) {
+        String input = addSpacePadding(getQuery());
+        for (String word : words) {
+            if (!input.contains(addSpacePadding(word))) {
+                return false;
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
-    public boolean startsWith(String prefix) {
-        if (notNull() && prefix != null) {
-            return getQuery().startsWith(prefix.toLowerCase());
-        }
-        return false;
+    public boolean startsWith(@NonNull String prefix) {
+        return getQuery().startsWith(prefix.toLowerCase());
     }
 
-    public String removeWords(String... words) {
-        if (notNull()) {
-            String result = addSpacePadding(getQuery());
+    public String removeWords(@NonNull String... words) {
+        String result = addSpacePadding(getQuery());
 
-            if (words != null) {
-                for (int i = 0; i < words.length; i++) {
-                    result = result.replace(addSpacePadding(words[i]), " ");
-                }
-            }
-            return result.trim();
+        for (String word : words) {
+            result = result.replace(addSpacePadding(word), " ");
         }
-        return null;
+        return result.trim();
+
     }
 
-    public String removeWords(String[]... words) {
-        if (notNull()) {
-            String result = addSpacePadding(getQuery());
+    public String removeWords(@NonNull String[]... words) {
+        String result = addSpacePadding(getQuery());
 
-            if (words != null) {
-                for (int i = 0; i < words.length; i++) {
-                    for (int j = 0; j < words[i].length; j++) {
-                        result = result.replace(addSpacePadding(words[i][j]), " ");
-                    }
-                }
+        for (String[] wordArray : words) {
+            for (String word : wordArray) {
+                result = result.replace(addSpacePadding(word), " ");
             }
-            return result.trim();
         }
-        return null;
+        return result.trim();
     }
 
     public String[] getWords() {
@@ -209,12 +173,8 @@ public class Question implements Parcelable {
         return params.getString(name);
     }
 
-    private boolean notNull() {
-        return params.containsKey(PARAM_QUERY);
-    }
-
     private String addSpacePadding(String string) {
-        return new StringBuilder().append(" ").append(string).append(" ").toString();
+        return " " + string + " ";
     }
 
     @Override

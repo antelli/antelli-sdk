@@ -11,6 +11,8 @@ import android.os.RemoteException;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.antelli.sdk.callback.ICanAnswerCallback;
 import io.antelli.sdk.callback.IAnswerCallback;
 import io.antelli.sdk.model.Command;
@@ -33,7 +35,7 @@ public abstract class AntelliPlugin extends Service {
      * @param callback Use callback.canAnswer(Boolean) to tell Antelli, wheter your plugin can answer the question or not
      * @throws RemoteException Implicit AIDL exception
      */
-    protected abstract void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException;
+    protected abstract void canAnswer(@NonNull Question question, @NonNull ICanAnswerCallback callback) throws RemoteException;
 
     /**
      * Create and publish Answer for user's Question using callback.send(Answer)
@@ -42,7 +44,7 @@ public abstract class AntelliPlugin extends Service {
      * @param callback Use callback.answer(Answer) to publish Answer back to Antelli
      * @throws RemoteException Implicit AIDL exception
      */
-    protected abstract void answer(Question question, IAnswerCallback callback) throws RemoteException;
+    protected abstract void answer(@NonNull Question question, @NonNull IAnswerCallback callback) throws RemoteException;
 
     /**
      * Create and publish Answer for user's command using callback.send(Answer)
@@ -51,19 +53,21 @@ public abstract class AntelliPlugin extends Service {
      * @param callback Use callback.answer(Answer) to publish Answer back to Antelli
      * @throws RemoteException Implicit AIDL exception
      */
-    protected abstract void command(Command command, IAnswerCallback callback) throws RemoteException;
+    protected abstract void command(@NonNull Command command, @NonNull IAnswerCallback callback) throws RemoteException;
 
     /**
      * Reset all variables to default values, if you set some during the conversation
      */
-    protected abstract void reset();
+    protected abstract void reset() throws RemoteException;
 
     /**
      * Define Settings Activity, if your plugin has enabled settings in Manifest
      *
      * @return Settings Activity Class
      */
-    protected abstract Class<? extends Activity> getSettingsActivity();
+    protected @Nullable Class<? extends Activity> getSettingsActivity(){
+        return null;
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,21 +75,21 @@ public abstract class AntelliPlugin extends Service {
         return new IAntelliPlugin.Stub() {
 
             @Override
-            public void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException {
+            public void canAnswer(@NonNull Question question, @NonNull ICanAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
                     AntelliPlugin.this.canAnswer(question, callback);
                 }
             }
 
             @Override
-            public void answer(Question question, IAnswerCallback callback) throws RemoteException {
+            public void answer(@NonNull Question question, @NonNull IAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
                     AntelliPlugin.this.answer(question, callback);
                 }
             }
 
             @Override
-            public void command(Command command, IAnswerCallback callback) throws RemoteException {
+            public void command(@NonNull Command command, @NonNull IAnswerCallback callback) throws RemoteException {
                 if (isAuthorized()) {
                     AntelliPlugin.this.command(command, callback);
                 }
@@ -96,7 +100,9 @@ public abstract class AntelliPlugin extends Service {
                 if (isAuthorized()) {
                     Class cls = getSettingsActivity();
                     if (cls != null) {
-                        startActivity(new Intent(AntelliPlugin.this, cls));
+                        Intent intent = new Intent(AntelliPlugin.this, cls);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 }
             }
