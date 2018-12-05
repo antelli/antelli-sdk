@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -13,8 +14,9 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import io.antelli.sdk.callback.ICanAnswerCallback;
+import androidx.annotation.RequiresApi;
 import io.antelli.sdk.callback.IAnswerCallback;
+import io.antelli.sdk.callback.ICanAnswerCallback;
 import io.antelli.sdk.model.Command;
 import io.antelli.sdk.model.Question;
 
@@ -31,6 +33,7 @@ public abstract class AntelliPlugin extends Service {
 
     /**
      * Specify the conditions if your service can answer user's Question
+     *
      * @param question User's question
      * @param callback Use callback.canAnswer(Boolean) to tell Antelli, wheter your plugin can answer the question or not
      * @throws RemoteException Implicit AIDL exception
@@ -65,7 +68,8 @@ public abstract class AntelliPlugin extends Service {
      *
      * @return Settings Activity Class
      */
-    protected @Nullable Class<? extends Activity> getSettingsActivity(){
+    @Nullable
+    protected Class<? extends Activity> getSettingsActivity() {
         return null;
     }
 
@@ -122,7 +126,8 @@ public abstract class AntelliPlugin extends Service {
         return (packageName != null && packageName.equals(ANTELLI_PACKAGE_NAME));
     }
 
-    protected Context getContext(String language){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    protected Context getContext(String language) {
         Configuration conf = getResources().getConfiguration();
         conf = new Configuration(conf);
         conf.setLocale(new Locale(language.replace("-", "_")));
