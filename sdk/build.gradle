@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 final VERSION_MAJOR = 1
 final VERSION_MINOR = 4
@@ -28,6 +29,8 @@ android {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 ext {
@@ -52,6 +55,9 @@ ext {
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
+}
+repositories {
+    mavenCentral()
 }
 
 //apply from: file('gradle/install-v1.gradle')
