@@ -3,6 +3,7 @@ package io.antelli.sdk.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,10 @@ import java.util.List;
 class HintList implements Parcelable {
 
     private List<Hint> hints;
+
+    public HintList(){
+        hints = new ArrayList();
+    }
 
     public HintList(List<Hint> hints) {
         this.hints = hints;

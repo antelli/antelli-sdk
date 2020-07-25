@@ -12,43 +12,36 @@ import kotlin.collections.ArrayList
  */
 open class Answer : Parcelable {
     var items: MutableList<AnswerItem> = ArrayList()
-    private set
+        private set
     private var params = Bundle()
 
-    constructor() {}
+    constructor()
     constructor(text: String?) {
-        addItem(AnswerItem().setText(text).setSpeech(text))
+        addItem(AnswerItem().apply {
+            this.text = text
+            this.speech = text
+        })
     }
 
     constructor(items: List<AnswerItem>) {
         this.items.addAll(items)
     }
 
-    fun addItem(item: AnswerItem): Answer {
+    fun addItem(item: AnswerItem) {
         items.add(item)
-        return this
     }
 
-    fun addItems(item: List<AnswerItem>): Answer {
+    fun addItems(item: List<AnswerItem>) {
         items.addAll(item)
-        return this
     }
 
-    val isAutoListen: Boolean
+    var isAutoListen: Boolean
         get() = params.getBoolean(PARAM_AUTO_LISTEN, false)
+        set(value) = params.putBoolean(PARAM_AUTO_LISTEN, value)
 
-    fun setAutoListen(autoListen: Boolean): Answer {
-        params.putBoolean(PARAM_AUTO_LISTEN, autoListen)
-        return this
-    }
-
-    fun setAutoRun(intent: Intent?): Answer {
-        params.putParcelable(PARAM_AUTO_RUN, intent)
-        return this
-    }
-
-    val autoRun: Intent
+    var autoRun: Intent?
         get() = params.getParcelable(PARAM_AUTO_RUN)
+        set(value) = params.putParcelable(PARAM_AUTO_RUN, value)
 
     override fun describeContents(): Int {
         return 0
@@ -67,6 +60,7 @@ open class Answer : Parcelable {
     companion object {
         private const val PARAM_AUTO_LISTEN = "AUTO_LISTEN"
         private const val PARAM_AUTO_RUN = "AUTO_RUN"
+
         @JvmField
         val CREATOR: Parcelable.Creator<Answer> = object : Parcelable.Creator<Answer> {
             override fun createFromParcel(source: Parcel): Answer? {
