@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.widget.ImageView
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Handcrafted by Štěpán Šonský on 27.08.2017.
@@ -44,8 +45,9 @@ class AnswerItem : Parcelable {
             return wrapper?.items
         }
         set(value) {
-            val wrapper = AnswerItemList(value)
-            params.putParcelable(PARAM_ITEMS, wrapper)
+            params.putParcelable(PARAM_ITEMS, if (value != null) {
+                AnswerItemList(value)
+            } else null)
         }
 
     fun addItem(item: AnswerItem) {
@@ -57,16 +59,19 @@ class AnswerItem : Parcelable {
 
     var hints: MutableList<Hint>?
         get() {
-            val wrapper: HintList = params.getParcelable(PARAM_HINTS) ?: HintList()
-            return wrapper.hints
+            val wrapper: HintList? = params.getParcelable(PARAM_HINTS)
+            return wrapper?.hints
         }
         set(value) {
-            val wrapper = HintList(value)
-            params.putParcelable(PARAM_HINTS, wrapper)
+            params.putParcelable(PARAM_HINTS, if (value != null) {
+                HintList(value)
+            } else {
+                null
+            })
         }
 
     fun addHint(hint: Hint) {
-        var hints = hints
+        var hints = this.hints
         if (hints == null) {
             hints = ArrayList()
         }
