@@ -11,17 +11,21 @@ import android.os.Parcelable
 class Command : Parcelable {
     private var params = Bundle()
 
-    constructor(action: String?) {
+    constructor(action: String) {
         params.putString(PARAM_ACTION, action)
     }
 
-    constructor(intent: Intent?) {
+    constructor(intent: Intent) {
         params.putString(PARAM_ACTION, ACTION_INTENT)
         params.putParcelable(PARAM_INTENT, intent)
     }
 
-    val action: String?
-        get() = params.getString(PARAM_ACTION)
+    val action: String
+        get() = params.getString(PARAM_ACTION)!!
+
+    val intent: Intent?
+        get() = params.getParcelable(PARAM_INTENT)
+
 
     fun putBoolean(name: String, value: Boolean) {
         params.putBoolean(name, value)
@@ -71,9 +75,6 @@ class Command : Parcelable {
         return params.getParcelable(name)
     }
 
-    val intent: Intent?
-        get() = params.getParcelable(PARAM_INTENT)
-
     override fun describeContents(): Int {
         return 0
     }
@@ -82,8 +83,8 @@ class Command : Parcelable {
         dest.writeBundle(params)
     }
 
-    protected constructor(`in`: Parcel) {
-        params = `in`.readBundle(javaClass.classLoader) ?: Bundle()
+    private constructor(parcel: Parcel) {
+        params = parcel.readBundle(javaClass.classLoader) ?: Bundle()
     }
 
     companion object {

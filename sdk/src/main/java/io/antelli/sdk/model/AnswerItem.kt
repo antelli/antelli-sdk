@@ -70,14 +70,6 @@ class AnswerItem : Parcelable {
             })
         }
 
-    fun addHint(hint: Hint) {
-        var hints = this.hints
-        if (hints == null) {
-            hints = ArrayList()
-        }
-        hints.add(hint)
-        this.hints = hints
-    }
 
     var type: Int
         get() = params.getInt(PARAM_TYPE, TYPE_CONVERSATION)
@@ -88,13 +80,8 @@ class AnswerItem : Parcelable {
         set(value) = params.putParcelable(PARAM_COMMAND, value)
 
     var imageScaleType: ImageView.ScaleType?
-        get() = if (params.containsKey(PARAM_IMAGE_SCALE_TYPE)) ImageView.ScaleType.valueOf(params.getString(PARAM_IMAGE_SCALE_TYPE)) else null
+        get() = if (params.containsKey(PARAM_IMAGE_SCALE_TYPE)) ImageView.ScaleType.valueOf(params.getString(PARAM_IMAGE_SCALE_TYPE)!!) else null
         set(value) = params.putString(PARAM_IMAGE_SCALE_TYPE, value?.name)
-
-    fun setImageScaleType(imageScaleType: ImageView.ScaleType): AnswerItem {
-
-        return this
-    }
 
     var stream: String?
         get() = params.getString(PARAM_STREAM)
@@ -106,6 +93,15 @@ class AnswerItem : Parcelable {
         get() = params.getString(PARAM_SPEECH)
         set(value) = params.putString(PARAM_SPEECH, value)
 
+    fun addHint(hint: Hint) {
+        var hints = this.hints
+        if (hints == null) {
+            hints = ArrayList()
+        }
+        hints.add(hint)
+        this.hints = hints
+    }
+
     override fun describeContents(): Int {
         return 0
     }
@@ -114,8 +110,8 @@ class AnswerItem : Parcelable {
         dest.writeBundle(params)
     }
 
-    protected constructor(`in`: Parcel) {
-        params = `in`.readBundle(javaClass.classLoader) ?: Bundle()
+    private constructor(parcel: Parcel) {
+        params = parcel.readBundle(javaClass.classLoader) ?: Bundle()
     }
 
     companion object {

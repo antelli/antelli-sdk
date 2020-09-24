@@ -38,8 +38,8 @@ internal class HintList : Parcelable {
         dest.writeTypedList(hints)
     }
 
-    protected constructor(`in`: Parcel) {
-        hints = `in`.createTypedArrayList(Hint.CREATOR) ?: ArrayList()
+    private constructor(parcel: Parcel) {
+        hints = parcel.createTypedArrayList(Hint.CREATOR) ?: ArrayList()
     }
 
     companion object {

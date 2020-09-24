@@ -3,16 +3,16 @@ apply plugin: 'kotlin-android'
 
 final VERSION_MAJOR = 1
 final VERSION_MINOR = 4
-final VERSION_PATCH = 3
+final VERSION_PATCH = 4
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.1'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 6
+        targetSdkVersion 30
+        versionCode 7
         versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
         buildConfigField "int", "VERSION_MAJOR", "${VERSION_MAJOR}"
         buildConfigField "int", "VERSION_MINOR", "${VERSION_MINOR}"
@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.0.0'
-    implementation "androidx.core:core-ktx:+"
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation "androidx.core:core-ktx:1.3.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

@@ -11,13 +11,44 @@ import java.util.*
 class Question : Parcelable {
     private var params = Bundle()
 
+    var query: String
+        get() = params.getString(PARAM_QUERY)!!
+        private set(query) {
+            params.putString(PARAM_QUERY, query)
+        }
+
+    var language: String
+        get() = params.getString(PARAM_LANGUAGE)!!
+        set(language) {
+            params.putString(PARAM_LANGUAGE, language)
+        }
+
+    val words: List<String>
+        get() {
+            return query.split(" ")
+        }
+
+    val numbers : List<Int>
+        get() {
+            val list: MutableList<Int> = ArrayList()
+            for (word in words) {
+                try {
+                    val number = word.toInt()
+                    list.add(number)
+                } catch (e: NumberFormatException) {
+                    //continue
+                }
+            }
+            return list
+        }
+
     constructor(query: String, language: String) {
-        this.query = query.toLowerCase()
+        this.query = query
         this.language = language
     }
 
     fun equals(string: String): Boolean {
-        return query == string.toLowerCase()
+        return query.equals(string, true)
     }
 
     fun equalsOne(strings: Array<String>): Boolean {
@@ -30,15 +61,13 @@ class Question : Parcelable {
     }
 
     operator fun contains(string: String): Boolean {
-        return query.contains(string.toLowerCase())
+        return query.contains(string, true)
     }
 
     fun containsOne(vararg strings: String): Boolean {
         for (string in strings) {
-            if (string != null) {
-                if (query.contains(string.toLowerCase())) {
-                    return true
-                }
+            if (query.contains(string, true)) {
+                return true
             }
         }
         return false
@@ -46,7 +75,7 @@ class Question : Parcelable {
 
     fun containsAll(vararg strings: String): Boolean {
         for (string in strings) {
-            if (string != null && !query.contains(string.toLowerCase())) {
+            if (!query.contains(string, true)) {
                 return false
             }
         }
@@ -61,7 +90,7 @@ class Question : Parcelable {
     fun containsOneWord(vararg words: String): Boolean {
         val input = addSpacePadding(query)
         for (word in words) {
-            if (word != null && input.contains(addSpacePadding(word.toLowerCase()))) {
+            if (input.contains(addSpacePadding(word), true)) {
                 return true
             }
         }
@@ -71,7 +100,7 @@ class Question : Parcelable {
     fun containsAllWords(vararg words: String): Boolean {
         val input = addSpacePadding(query)
         for (word in words) {
-            if (word != null && !input.contains(addSpacePadding(word))) {
+            if (!input.contains(addSpacePadding(word), true)) {
                 return false
             }
         }
@@ -79,35 +108,8 @@ class Question : Parcelable {
     }
 
     fun startsWith(prefix: String): Boolean {
-        return query.startsWith(prefix.toLowerCase())
+        return query.startsWith(prefix, true)
     }
-
-    fun removeWords(vararg words: String): String {
-        var result = addSpacePadding(query)
-        for (word in words) {
-            if (word != null) {
-                result = result.replace(addSpacePadding(word), " ")
-            }
-        }
-        return result.trim { it <= ' ' }
-    }
-
-    fun removeWords(vararg words: Array<String>): String {
-        var result = addSpacePadding(query)
-        for (wordArray in words) {
-            if (wordArray != null) {
-                for (word in wordArray) {
-                    if (word != null) {
-                        result = result.replace(addSpacePadding(word), " ")
-                    }
-                }
-            }
-        }
-        return result.trim { it <= ' ' }
-    }
-
-    val words: Array<String>
-        get() = query.split(" ".toRegex()).toTypedArray()
 
     fun getWordAt(position: Int): String? {
         val words = words
@@ -126,42 +128,29 @@ class Question : Parcelable {
         return -1
     }
 
-    //continue
-    val numbers: IntArray
-        get() {
-            val list: MutableList<Int> = ArrayList()
-            for (word in words) {
-                try {
-                    val number = word.toInt()
-                    list.add(number)
-                } catch (e: NumberFormatException) {
-                    //continue
-                }
-            }
-            val result = IntArray(list.size)
-            for (i in list.indices) {
-                result[i] = list[i]
-            }
-            return result
+    fun removeWords(vararg words: String): String {
+        var result = addSpacePadding(query)
+        for (word in words) {
+            result = result.replace(addSpacePadding(word), " ")
         }
+        return result.trim { it <= ' ' }
+    }
 
-    var query: String
-        get() = params.getString(PARAM_QUERY)
-        private set(lowerCase) {
-            params.putString(PARAM_QUERY, lowerCase)
+    fun removeWords(vararg words: Array<String>): String {
+        var result = addSpacePadding(query)
+        for (wordArray in words) {
+            for (word in wordArray) {
+                result = result.replace(addSpacePadding(word), " ")
+            }
         }
-
-    var language: String
-        get() = params.getString(PARAM_LANGUAGE)
-        set(language) {
-            params.putString(PARAM_LANGUAGE, language)
-        }
+        return result.trim(' ')
+    }
 
     fun setParam(name: String, value: String) {
         params.putString(name, value)
     }
 
-    fun getParam(name: String?): String {
+    fun getParam(name: String?): String? {
         return params.getString(name)
     }
 
@@ -177,13 +166,14 @@ class Question : Parcelable {
         dest.writeBundle(params)
     }
 
-    protected constructor(`in`: Parcel) {
-        params = `in`.readBundle(javaClass.classLoader)
+    private constructor(parcel: Parcel) {
+        params = parcel.readBundle(javaClass.classLoader) ?: Bundle()
     }
 
     companion object {
         private const val PARAM_QUERY = "QUERY"
         private const val PARAM_LANGUAGE = "LANGUAGE"
+
         @JvmField
         val CREATOR: Parcelable.Creator<Question> = object : Parcelable.Creator<Question> {
             override fun createFromParcel(source: Parcel): Question? {

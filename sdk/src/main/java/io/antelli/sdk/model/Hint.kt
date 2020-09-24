@@ -28,9 +28,9 @@ class Hint() : Parcelable {
         dest.writeParcelable(command, flags)
     }
 
-    protected constructor(`in`: Parcel) : this() {
-        title = `in`.readString()
-        command = `in`.readParcelable(Command::class.java.classLoader)
+    private constructor(parcel: Parcel) : this() {
+        title = parcel.readString()
+        command = parcel.readParcelable(Command::class.java.classLoader)
     }
 
     companion object {

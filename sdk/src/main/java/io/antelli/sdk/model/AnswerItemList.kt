@@ -32,8 +32,8 @@ internal class AnswerItemList : Parcelable {
         dest.writeTypedList(items)
     }
 
-    protected constructor(`in`: Parcel) {
-        items = `in`.createTypedArrayList(AnswerItem.CREATOR) ?: ArrayList()
+    private constructor(parcel: Parcel) {
+        items = parcel.createTypedArrayList(AnswerItem.CREATOR) ?: ArrayList()
     }
 
     companion object {

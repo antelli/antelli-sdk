@@ -68,7 +68,7 @@ abstract class AntelliPlugin : Service() {
      * @return Settings Activity Class
      */
     protected open val settingsActivity: KClass<out Activity>?
-        protected get() = null
+        get() = null
 
     override fun onBind(intent: Intent): IBinder {
         return object : IAntelliPlugin.Stub() {
@@ -113,7 +113,7 @@ abstract class AntelliPlugin : Service() {
     }
 
     private val isAuthorized: Boolean
-        private get() {
+        get() {
             val pm = packageManager
             val packageName = pm.getNameForUid(Binder.getCallingUid())
             return packageName != null && packageName == ANTELLI_PACKAGE_NAME

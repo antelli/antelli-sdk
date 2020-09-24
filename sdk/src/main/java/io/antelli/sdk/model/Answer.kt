@@ -35,7 +35,7 @@ open class Answer : Parcelable {
         items.addAll(item)
     }
 
-    var isAutoListen: Boolean
+    var autoListen: Boolean
         get() = params.getBoolean(PARAM_AUTO_LISTEN, false)
         set(value) = params.putBoolean(PARAM_AUTO_LISTEN, value)
 
@@ -52,9 +52,9 @@ open class Answer : Parcelable {
         dest.writeBundle(params)
     }
 
-    protected constructor(`in`: Parcel) {
-        items = `in`.createTypedArrayList(AnswerItem.CREATOR) ?: ArrayList()
-        params = `in`.readBundle(javaClass.classLoader) ?: Bundle()
+    private constructor(parcel: Parcel) {
+        items = parcel.createTypedArrayList(AnswerItem.CREATOR) ?: ArrayList()
+        params = parcel.readBundle(javaClass.classLoader) ?: Bundle()
     }
 
     companion object {
