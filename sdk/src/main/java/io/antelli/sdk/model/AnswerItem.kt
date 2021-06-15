@@ -13,11 +13,22 @@ import kotlin.collections.ArrayList
 class AnswerItem : Parcelable {
     private var params = Bundle()
 
-    constructor() {}
+    constructor()
+
+    constructor(textAndSpeech: String?) {
+        this.textAndSpeech = textAndSpeech
+    }
 
     var text: String?
         get() = params.getString(PARAM_TEXT)
         set(value) = params.putString(PARAM_TEXT, value)
+
+    private var textAndSpeech: String?
+        get() = text
+        set(value) {
+            params.putString(PARAM_TEXT, value)
+            params.putString(PARAM_SPEECH, value)
+        }
 
     var largeText: String?
         get() = params.getString(PARAM_LARGE_TEXT)
